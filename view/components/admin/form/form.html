@@ -1,0 +1,19 @@
+{% if uuid is not empty %}
+    {% set tags = createModel('Tags','tags') %} 
+{% endif %}
+
+{% set language = language|default(getLanguage()) %}  
+
+<form class="ui equal width form" id="tags_form">  
+    <input type="hidden" name="uuid" id="uuid" value="{{ uuid }}">  
+    <input type="hidden" name="language" id="language" value="{{ language }}">  
+   
+    <div class="field required">
+        <label>{{ tag.label }}</label>
+        <input type="text" name="word" id="word" {{ title.placeholder|attr('placeholder') }} value="{{ tags.translation(language).word }}">  
+    </div>                  
+    <div class="field">
+        {{ component('components:language.label',{ language: language, class: 'basic' }) }}       
+    </div>
+    {{ component('components:form.footer') }}   
+</form>

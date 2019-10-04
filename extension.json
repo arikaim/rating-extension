@@ -1,0 +1,17 @@
+{
+    "title": "Rating",
+    "icon": "star",
+    "class": "Rating",
+    "type": "system",
+    "description": "Rating any type of item.",
+    "short_description": "Manage rating.",
+    "version": "1.0",
+    "position": "3",
+    "admin_menu": {        
+        "title": "Rating",
+        "icon": "star",
+        "page_title": "Rating",
+        "page_icon": "star",       
+        "component": "rating::admin"
+    }
+}

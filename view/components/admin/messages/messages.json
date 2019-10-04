@@ -1,0 +1,8 @@
+{
+    "add": "Rating was added successfully.",
+    "delete": "Rating was deleted successfully.",   
+    "errors": {
+        "add": "Can't add rating.",
+        "delete": "Can't delete rating"        
+    }
+}

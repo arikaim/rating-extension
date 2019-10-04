@@ -1,0 +1,8 @@
+{
+    "messages": {
+        "remove": {
+            "title": "Confirm Remove",
+            "content": "Confirm remove rating '<b><% title %></b>'."
+        }
+    }    
+}

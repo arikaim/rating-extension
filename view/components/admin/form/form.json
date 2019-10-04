@@ -1,0 +1,10 @@
+{
+    "tag": {
+        "label": "Tag",               
+        "placeholder": "Enter tag"
+        
+    },
+    "labels": {
+        "language": "Language"      
+    }    
+}

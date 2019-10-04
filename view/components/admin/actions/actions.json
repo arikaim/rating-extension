@@ -1,0 +1,12 @@
+{
+    "buttons": {        
+        "delete": {               
+            "title": "Delete Category",
+            "content": "Delete"
+        },
+        "add": {               
+            "title": "Add sub Category",
+            "content": "Add"
+        }          
+    }
+}
