@@ -13,15 +13,15 @@ function RatingControlPanel() {
     var self = this;
 
     this.delete = function(uuid,onSuccess,onError) {
-        return arikaim.delete('/api/rating/admin/delete/' + uuid,onSuccess,onError);          
+        return arikaim.delete('/api/rating/admin/delete/' + uuid, onSuccess, onError);          
     };
 
     this.add = function(data,onSuccess,onError) {
-        return arikaim.post('/api/rating/admin/delete/',data, onSuccess,onError);          
+        return arikaim.post('/api/rating/admin/delete/',data, onSuccess, onError);          
     };
 
-    this.loadAddTag = function(parent_id, language) {
-        arikaim.ui.setActiveTab('#add_tag','.tags-tab-item')   
+    this.loadAddTag = function() {
+      //  arikaim.ui.setActiveTab('#add_tag','.tags-tab-item')   
         arikaim.page.loadContent({
             id: 'tags_content',
             component: 'tags::admin.add',
@@ -30,7 +30,7 @@ function RatingControlPanel() {
     };
 
     this.init = function() {    
-       
+        arikaim.ui.tab('.rating-tab-item');
     };
 }
 

@@ -1,11 +1,10 @@
 {% component 'components:tabs.vertical.content' %}
 {% set class = 'sixteen wide column' %}
 
-
-<div class="mt-10" id="tags_rows" component="tags::admin.view.rows" namespace="tags">
-    {{ component('tags::admin.view.rows',{ language: language }) }}   
+<div class="mt-10" id="rating_rows" component="rating::admin.view.rows" namespace="rating">
+    {{ component('rating::admin.view.rows',{ language: language }) }}   
 </div>
 <div class="mt-2">
-        {{ component('components:paginator',{ namespace: 'tags' }) }}
+    {{ component('components:paginator',{ namespace: 'rating' }) }}
 </div>
 {% endcomponent %}

@@ -5,25 +5,20 @@
  *  @license    http://www.arikaim.com/license.html
  *  http://www.arikaim.com
  * 
- *  Extension: Tags
- *  Component: tags::admin.view
+ *  Extension: Rating
+ *  Component: ratging::admin.view
 */
 
-function TagsView() {
+function RatingView() {
     var self = this;
 
     this.init = function() {
-        var component = arikaim.component.get('tags::admin');
+        var component = arikaim.component.get('rating::admin');
         var remove_message = component.getProperty('messages.remove.content');
       
-        paginator.init('tags_rows');
+        paginator.init('rating_rows');
 
-        arikaim.ui.button('.add-button',function(element) {
-           
-            var language = $(element).attr('language');
-           // category.loadAddCategory(parent_id,language); 
-        });
-      
+    
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
@@ -33,17 +28,16 @@ function TagsView() {
                 title: component.getProperty('messages.remove.title'),
                 description: message
             },function() {
-                tags.delete(uuid,function(result) {
-                    $('#' + uuid).remove();
-                    $('.class-' + uuid).remove();                   
+                rating.delete(uuid,function(result) {
+                    $('#' + uuid).remove();                             
                 });
             });
         });
     };
 }
 
-var tagsView = new TagsView();
+var ratingView = new RatingView();
 
 arikaim.page.onReady(function() {
-    tagsView.init();   
+    ratingView.init();   
 });

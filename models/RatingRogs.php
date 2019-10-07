@@ -11,43 +11,26 @@ namespace Arikaim\Extensions\Rating\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Arikaim\Extensions\Rating\Models\RatingLogs;
-
 use Arikaim\Core\Traits\Db\Uuid;
 use Arikaim\Core\Traits\Db\Find;
 
-class Rating extends Model  
+class RatingLogs extends Model  
 {
     use Uuid,       
         Find;
        
-    protected $table = "rating";
+    protected $table = "rating_logs";
 
     protected $fillable = [
-        'reference_id',
-        'type',
-        'summary'      
+        'ip',
+        'rating_id',
+        'value'      
     ];
-    
+   
     public $timestamps = false;
     
-    public function logs()
-    {
-
-    }
-
-    public function remove($id, $type, $remove_logs = true)
+    public function hasLog($rating_id, $user_id, $ip)
     {
                
-    }
-
-    public function add($id, $type, $value, $add_log = true)
-    {
-
-    }
-
-    public function setRating($id, $type, $value)
-    {
-
-    }
+    }   
 }

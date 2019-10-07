@@ -1,4 +1,9 @@
 {
+    "labels": {
+        "view": "View",
+        "logs": "Logs",
+        "settings": "Setting"
+    },
     "messages": {
         "remove": {
             "title": "Confirm Remove",

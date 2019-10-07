@@ -1,14 +1,13 @@
 {% set params = { language: language, empty: labels.empty } %}
 {% set items = [ 
-    { title: labels.view, component: 'tags::admin.view', icon: 'list', id: 'view_tags', active: true, params: params },   
-    { title: labels.add, component: 'tags::admin.add', icon: 'plus', id: 'add_tag', params: params },
-    { title: labels.relations, component: 'tags::admin.relations', icon: 'linkify', id: 'relations', params: params }
+    { title: labels.view, component: 'rating::admin.view', icon: 'list', id: 'view_tags', active: true, params: params },   
+    { title: labels.add, component: 'rating::admin.add', icon: 'plus', id: 'add_tag', params: params }   
 ] %}
 
 {{  component('components:tabs.vertical',{ 
         items: items, 
-        menu: { id: 'tags_menu' }, 
+        menu: { id: 'rating_menu' }, 
         item_class: 'tags-tab-item',
-        content: { id: 'tags_content', component: 'tags::admin.view', params: params } 
+        content: { id: 'tags_content', component: 'rating::admin.view', params: params } 
     })
 }}

@@ -7,6 +7,7 @@
     "short_description": "Manage rating.",
     "version": "1.0",
     "position": "3",
+    "repository": "https://github.com/arikaim/rating-extension.git",
     "admin_menu": {        
         "title": "Rating",
         "icon": "star",

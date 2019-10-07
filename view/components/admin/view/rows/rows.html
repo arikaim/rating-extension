@@ -1,9 +1,9 @@
 {% component 'components:view.rows' %}
-    {% set tags = createModel('Tags','tags').get() %}
-    {% set items = paginate(tags,'tags') %}
+    {% set rating = createModel('Rating','rating').get() %}
+    {% set items = paginate(rating,'rating') %}
     {% for item in items.getItems() %}
     <tr>
-        <td>{{ item.word }}</td>
+        <td>...</td>
     </tr>
     {% endfor %}
 {% endcomponent %}

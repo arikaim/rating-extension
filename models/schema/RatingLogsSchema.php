@@ -12,16 +12,16 @@ namespace Arikaim\Extensions\Rating\Models\Schema;
 use Arikaim\Core\Db\Schema;
 
 /**
- * Rating db table
+ * RatingLogs db table
  */
-class RatingSchema extends Schema  
+class RatingLogsSchema extends Schema  
 {    
     /**
      * Table name
      *
      * @var string
      */
-    protected $table_name = "rating";
+    protected $table_name = "rating_logs";
 
     /**
      * Create table
@@ -34,11 +34,12 @@ class RatingSchema extends Schema
         // columns    
         $table->id();      
         $table->prototype('uuid');            
-        $table->integer('reference_id')->nullable(false);
-        $table->string('type')->nullable(false); 
-        $table->decimal('summary',2,2)->nullable(false)->default(0.00);
+        $table->relation('rating_id','rating');
+        $table->userid();
+        $table->string('ip')->nullable(false); 
+        $table->decimal('value',2,2)->nullable(false);
         // index       
-        $table->unique(['reference_id','type']);   
+        $table->index('rating_id');   
     }
 
     /**

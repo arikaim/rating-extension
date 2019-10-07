@@ -1,18 +1,14 @@
 {% set language = getLanguage() %}
 
-{% set items = [{ 
-        id: 'language_button',
-        icon: 'globe', 
-        active: true,
-        content: { 
-            component: 'components:language.dropdown',
-            params: { name: 'language', id: 'choose_language', selected: language, class: 'inline search selection mini' } 
-        } 
-    }
-] %}
+{%  set items = [ 
+        { id: 'view_rating',title: labels.view, icon: 'list', active: true },           
+        { id: 'view_logs',title: labels.logs, icon: 'list' },
+        { id: 'settings',title: labels.settings, icon: 'cogs' }    
+    ] 
+%}
 
 {{  component('components:tabs',{ 
         items: items,
-        content: { component: 'tags::admin.menu', params: { language: language } } 
+        content: { component: 'rating::admin.menu' } 
     })
 }}
