@@ -2,7 +2,7 @@
     "title": "Rating",
     "icon": "star",
     "class": "Rating",
-    "type": "system",
+    "type": "user",
     "description": "Rating any type of item.",
     "short_description": "Manage rating.",
     "version": "1.0",
