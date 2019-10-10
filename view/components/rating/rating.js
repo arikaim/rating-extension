@@ -23,7 +23,6 @@ function Rating() {
     this.init = function() {
         $('.rating').rating({
             initialRating: 2,
-            maxRating: 4, 
             disable: false,
             onRate: function(value) {
                 console.log(value);
@@ -34,3 +33,7 @@ function Rating() {
 }
 
 var rating = new Rating();
+
+$(document).ready(function() {
+    rating.init();
+});

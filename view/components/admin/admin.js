@@ -30,12 +30,12 @@ function RatingControlPanel() {
     };
 
     this.init = function() {    
-        arikaim.ui.tab('.rating-tab-item');
+        arikaim.ui.tab();        
     };
 }
 
 var ratingControlPanel = new RatingControlPanel();
 
-arikaim.page.onReady(function() {
+$(document).ready(function() {
     ratingControlPanel.init();
 });

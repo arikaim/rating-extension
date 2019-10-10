@@ -1,6 +1,8 @@
 {
-    "title": {
-        "content": "View",
-        "icon": "list"              
+    "columns": {
+        "action": "Action",
+        "id": "Id",
+        "type": "Type",
+        "rating": "Rating"              
     }
 }

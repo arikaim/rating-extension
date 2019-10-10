@@ -1,3 +1,5 @@
 {
-    
+    "error": {
+        "message": "Rating Id or type not set."
+    }
 }

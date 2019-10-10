@@ -3,7 +3,15 @@
     {% set items = paginate(rating,'rating') %}
     {% for item in items.getItems() %}
     <tr>
-        <td>...</td>
+        <td>
+
+        </td>
+        <td>
+            {{ item.rating_id }}
+        </td>
+        <td>
+            {{ item.type }}
+        </td>
     </tr>
     {% endfor %}
 {% endcomponent %}

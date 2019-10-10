@@ -1,14 +1,14 @@
 {% set language = getLanguage() %}
 
 {%  set items = [ 
-        { id: 'view_rating',title: labels.view, icon: 'list', active: true },           
-        { id: 'view_logs',title: labels.logs, icon: 'list' },
-        { id: 'settings',title: labels.settings, icon: 'cogs' }    
+        { id: 'view_rating',title: labels.view, icon: 'list', component: 'rating::admin.view', active: true },           
+        { id: 'view_logs',title: labels.logs, icon: 'history', component: 'rating::admin.logs' },
+        { id: 'settings',title: labels.settings, component: 'rating::admin.settings', icon: 'cogs' }    
     ] 
 %}
 
 {{  component('components:tabs',{ 
         items: items,
-        content: { component: 'rating::admin.menu' } 
+        content: { component: 'rating::admin.view' } 
     })
 }}

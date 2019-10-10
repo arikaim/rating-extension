@@ -1,10 +1,28 @@
-{% component 'components:tabs.vertical.content' %}
-{% set class = 'sixteen wide column' %}
-
-<div class="mt-10" id="rating_rows" component="rating::admin.view.rows" namespace="rating">
-    {{ component('rating::admin.view.rows',{ language: language }) }}   
+<div class="ui stackable grid">
+    <div class="sixteen wide column mt-10">           
+        {{ component("components:search",{ namespace: 'rating' }) }}
+    </div>
 </div>
-<div class="mt-2">
-    {{ component('components:paginator',{ namespace: 'rating' }) }}
+<div class="ui stackable text menu">
+    <div class="item right floated">       
+        {{ component('components:paginator.dropdown',{ namespace: 'rating' }) }}
+    </div>
 </div>
-{% endcomponent %}
+<div class="ui mt-2">
+    <table class="ui compact stackable selectable borderless basic table">
+        <thead class="table-head">
+            <tr>              
+                <th class="one wide collapsing left aligned">{{ columns.action }}</th>
+                <th class="collapsing one wide">{{ columns.id }}</th>
+                <th class="collapsing center aligned">{{ columns.type }}</th>    
+                <th class="ten wide">{{ columns.rating }}</th>                                                            
+            </tr>
+        </thead>
+        <tbody id="rating_rows" component="rating::admin.view.rows" namespace="rating">
+            {{ component('rating::admin.view.rows') }} 
+        </tbody>
+    </table> 
+    <div id="paginator">      
+        {{ component("components:paginator",{ namespace: 'rating' }) }}
+    </div>
+</div>

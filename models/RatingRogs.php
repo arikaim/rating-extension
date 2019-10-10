@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\Model;
 
 use Arikaim\Core\Traits\Db\Uuid;
 use Arikaim\Core\Traits\Db\Find;
+use Arikaim\Core\Traits\Db\UserRelation;
 
 class RatingLogs extends Model  
 {
-    use Uuid,       
+    use Uuid,    
+        UserRelation,   
         Find;
        
     protected $table = "rating_logs";
@@ -29,7 +31,7 @@ class RatingLogs extends Model
    
     public $timestamps = false;
     
-    public function hasLog($rating_id, $user_id, $ip)
+    public function hasLog($rating_id, $user_id = null, $ip = null)
     {
                
     }   

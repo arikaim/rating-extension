@@ -1,3 +1,8 @@
 {% set icon = 'star' %}
 {% set max = 7 %}
-<div class="ui rating {{ class }}" data-icon="{{ icon }}" data-rating="1" data-max-rating="{{ max }}"></div>
+{% if rating_id is empty or type is empty %}
+    {{ component('components:message.error',{ message: error.message }) }}
+{% else %}
+    {% set rating = createModel('Rating','rating') %}
+    <div class="ui rating {{ class }}" data-icon="{{ icon }}" data-rating="1" data-max-rating="{{ max }}"></div>
+{% endif %}
