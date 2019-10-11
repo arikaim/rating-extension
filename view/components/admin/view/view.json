@@ -1,8 +1,8 @@
 {
     "columns": {
         "action": "Action",
-        "id": "Id",
-        "type": "Type",
-        "rating": "Rating"              
+        "reference": "Reference",      
+        "rating": "Average Rating",
+        "count": "Rated Count"            
     }
 }

@@ -11,21 +11,31 @@
 function Rating() {
     var self = this;
 
-    this.add = function(id, type, value , onSuccess, onError) {
+    this.add = function(id, type, value, onSuccess, onError) {
         var data = {
             id: id,
             type: type,
             value: value
         };
-        return arikaim.post('/api/rating/add',data, onSuccess,onError);          
+        return arikaim.post('/api/rating/add',data,onSuccess,onError);          
+    };
+
+    this.updateLabels = function(summary) {
+        $('.rating-summary').html(summary);
     };
 
     this.init = function() {
-        $('.rating').rating({
-            initialRating: 2,
-            disable: false,
+
+        $('.rating').rating({             
             onRate: function(value) {
-                console.log(value);
+                var id = $(this).attr('reference-id');
+                var type = $(this).attr('type');
+                var rating = this;
+
+                self.add(id,type,value,function(result) {                   
+                    self.updateLabels(result.average);                   
+                    $(rating).rating('disable');
+                });
             }
         });
 

@@ -77,7 +77,7 @@ class RatingControlPanel extends ApiController
 
         $this->onDataValid(function($data) {
             $uuid = $data->get('uuid');
-            $result = Model::Category('category')->remove($uuid);
+            $result = Model::Rating('rating')->remove($uuid);
 
             $this->setResponse($result,function() use($uuid) {            
                 $this

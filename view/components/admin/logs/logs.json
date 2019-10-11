@@ -1,0 +1,13 @@
+{
+    "columns": {
+        "action": "Action",
+        "id": "Id",
+        "value":" Value",
+        "date": "Date Created",
+        "ip": "Ip"  ,
+        "user": "User"            
+    },
+    "labels": {
+        "reference": "Reference"
+    }
+}

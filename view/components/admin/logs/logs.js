@@ -6,14 +6,14 @@
  *  http://www.arikaim.com
  * 
  *  Extension: Rating
- *  Component: ratging::admin.view
+ *  Component: ratging::admin.logs
 */
 
-function RatingView() {
+function RatingLogs() {
     var self = this;
 
     this.init = function() {
-        paginator.init('rating_rows');
+        paginator.init('rating_logs');
     };
 
     this.initRows = function() {
@@ -29,30 +29,30 @@ function RatingView() {
                 title: component.getProperty('messages.remove.title'),
                 description: message
             },function() {
-                ratingControlPanel.delete(uuid,function(result) {
+                self.delete(uuid,function(result) {
                     $('#' + uuid).remove();                             
                 });
             });
         });
 
-        arikaim.ui.button('.view-logs',function(element) {
+        arikaim.ui.button('.view-rating',function(element) {
             var type = $(element).attr('type');
-            var reference_id = $(element).attr('reference-id');
+            var uuid = $(element).attr('uuid');
 
-            arikaim.ui.setActiveTab('#view_logs');
+            arikaim.ui.setActiveTab('#view_rating');
 
             arikaim.page.loadContent({
                 id: 'tab_content',
-                component: 'rating::admin.logs',
-                params: { type: type, reference_id: reference_id }
+                component: 'rating::admin.view',
+                params: { type: type, uuid: uuid }
             }); 
             
         });
     };
 }
 
-var ratingView = new RatingView();
+var ratingLogs = new RatingLogs();
 
 arikaim.page.onReady(function() {
-    ratingView.init();   
+    ratingLogs.init();   
 });

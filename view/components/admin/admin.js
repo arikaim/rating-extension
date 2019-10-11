@@ -16,17 +16,8 @@ function RatingControlPanel() {
         return arikaim.delete('/api/rating/admin/delete/' + uuid, onSuccess, onError);          
     };
 
-    this.add = function(data,onSuccess,onError) {
-        return arikaim.post('/api/rating/admin/delete/',data, onSuccess, onError);          
-    };
-
-    this.loadAddTag = function() {
-      //  arikaim.ui.setActiveTab('#add_tag','.tags-tab-item')   
-        arikaim.page.loadContent({
-            id: 'tags_content',
-            component: 'tags::admin.add',
-            params: { language: language }
-        });          
+    this.update = function(data,onSuccess,onError) {
+        return arikaim.put('/api/rating/admin/update',data, onSuccess, onError);          
     };
 
     this.init = function() {    

@@ -33,11 +33,12 @@ class RatingLogsSchema extends Schema
     {            
         // columns    
         $table->id();      
-        $table->prototype('uuid');            
+        $table->prototype('uuid');          
+        $table->dateCreated();  
         $table->relation('rating_id','rating');
-        $table->userid();
-        $table->string('ip')->nullable(false); 
-        $table->decimal('value',2,2)->nullable(false);
+        $table->userId();
+        $table->string('ip')->nullable(true); 
+        $table->float('value',5,2)->nullable(false);
         // index       
         $table->index('rating_id');   
     }

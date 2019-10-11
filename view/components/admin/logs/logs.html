@@ -1,0 +1,33 @@
+<div class="ui stackable grid">
+    <div class="sixteen wide column mt-10 center aligned">           
+        {% if reference_id is not null %}
+        <span class="font-bold mr-1">{{ labels.reference }}</span>
+        {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}       
+        {% endif %}       
+    </div>
+</div>
+<div class="ui stackable text menu">
+    <div class="item right floated">       
+        {{ component('components:paginator.dropdown',{ namespace: 'rating.logs' }) }}
+    </div>
+</div>
+<div class="ui mt-2">
+    <table class="ui compact stackable selectable borderless basic table">
+        <thead class="table-head">
+            <tr>              
+                <th class="one wide collapsing left aligned">{{ columns.action }}</th>
+                <th class="collapsing two wide">{{ columns.date }}</th>
+                <th class="one wide collapsing">{{ columns.id }}</th>    
+                <th class="one wide collapsing">{{ columns.value }}</th>    
+                <th class="ten wide">{{ columns.ip }}</th>   
+                <th class="ten wide">{{ columns.user }}</th>                                                            
+            </tr>
+        </thead>
+        <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
+            {{ component('rating::admin.logs.rows') }} 
+        </tbody>
+    </table> 
+    <div id="paginator" class="mt-2">      
+        {{ component("components:paginator",{ namespace: 'rating.logs' }) }}
+    </div>
+</div>

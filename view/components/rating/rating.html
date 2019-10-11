@@ -1,8 +1,11 @@
-{% set icon = 'star' %}
-{% set max = 7 %}
+{% set icon = icon|default('star') %}
+{% set max = max|default(7) %}
 {% if rating_id is empty or type is empty %}
     {{ component('components:message.error',{ message: error.message }) }}
 {% else %}
-    {% set rating = createModel('Rating','rating') %}
-    <div class="ui rating {{ class }}" data-icon="{{ icon }}" data-rating="1" data-max-rating="{{ max }}"></div>
+    {% set rating = createModel('Rating','rating').findRating(rating_id,type) %}
+    {% set log = rating.log().findLog() %}
+    {% set value = (log is empty) ? 0 : log.value %}
+    {% set disabled = rating.isAllowed(rating_id,type) %}
+    <div title="{{ title }} {{ value }}" class="ui rating {{ disabled|ifthen(false,'disabled') }} {{ class }}" data-icon="{{ icon }}" data-rating="{{ value }}" data-max-rating="{{ max }}" type="{{ type }}" reference-id="{{ rating_id }}"></div>
 {% endif %}

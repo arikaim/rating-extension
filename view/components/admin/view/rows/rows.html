@@ -1,16 +1,28 @@
 {% component 'components:view.rows' %}
-    {% set rating = createModel('Rating','rating').get() %}
-    {% set items = paginate(rating,'rating') %}
+    {% set rating = createModel('Rating','rating').orderBy('id') %}
+    {% set items = paginate(rating,'rating') %}   
     {% for item in items.getItems() %}
-    <tr>
+    {% set data_title = component('system:admin.orm.model.name',{ type: item.type, uuid: item.reference_id })|striptags %}
+    <tr id="{{ item.uuid }}">
         <td>
-
+            <button class="ui icon mini basic button edit-button" {{ buttons.edit.title|attr('title') }} uuid="{{ item.uuid }}">
+                <i class="icon edit"></i>
+            </button>
+            <button class="ui icon mini basic button delete-button" {{ buttons.delete.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ data_title }}">
+                <i class="icon trash orange"></i>
+            </button>  
+            <button type="{{ item.type }}" reference-id="{{ item.reference_id }}" class="ui icon mini basic button view-logs" {{ buttons.losg.title|attr('title') }} uuid="{{ item.uuid }}">
+                <i class="icon history"></i>
+            </button>        
         </td>
         <td>
-            {{ item.rating_id }}
+            {{ component('rating::admin.reference.label',{ type: item.type, id: item.reference_id }) }}          
+        </td>       
+        <td>
+            {{ item.average|numberFormat([2]) }}
         </td>
         <td>
-            {{ item.type }}
+            {{ item.rated_count }}
         </td>
     </tr>
     {% endfor %}

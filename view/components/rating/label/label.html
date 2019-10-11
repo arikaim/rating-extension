@@ -1,0 +1,8 @@
+{% set rating = createModel('Rating','rating').findRating(rating_id,type) %}
+{% set icon_class = icon_class|default('star') %}
+{% if rating is not empty %}
+    <div class="ui label rating-label {{ class }}" {{ title|attr('title') }}>
+        <i class="icon {{ icon_class }}"></i>
+        <span class="rating-summary" >{{ rating.average|numberFormat([2]) }}</span>
+    </div>
+{% endif %}

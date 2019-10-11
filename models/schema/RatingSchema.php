@@ -36,7 +36,8 @@ class RatingSchema extends Schema
         $table->prototype('uuid');            
         $table->integer('reference_id')->nullable(false);
         $table->string('type')->nullable(false); 
-        $table->decimal('summary',2,2)->nullable(false)->default(0.00);
+        $table->decimal('summary',15,2)->nullable(false)->default(0.00);
+        $table->integer('rated_count')->nullable(false)->default(1);
         // index       
         $table->unique(['reference_id','type']);   
     }

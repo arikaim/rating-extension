@@ -3,11 +3,7 @@
         "delete": {      
             "content": "Delete",          
             "title": "Delte rating"
-        },
-        "logs": {      
-            "content": "View Logs",          
-            "title": "View Rating Logs"
-        },
+        },      
         "edit": {      
             "content": "Edit",          
             "title": "Edit Rating"

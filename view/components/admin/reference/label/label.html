@@ -1,0 +1,7 @@
+<div class="ui basic label ">
+    {{ id }}
+    <div class="detail">
+        {{ type }}
+    </div>
+</div>
+{{ component('system:admin.orm.model.name',{ type: type, uuid: id }) }}
