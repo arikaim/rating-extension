@@ -83,7 +83,7 @@ class Rating extends Model
         $single_user = Arikaim::options()->get('rating.single.user',true);
         $anonymous = Arikaim::options()->get('rating.allow.anonymous',false);
 
-        if ($anonymous == false) {              
+        if ($anonymous == false) {                        
             if (empty(Arikaim::auth()->getId()) == true) {               
                 return false;
             }
@@ -91,7 +91,7 @@ class Rating extends Model
     
         if ($single_ip == true || $single_user == true) {
             $rating = $this->findRating($id,$type);
-            if (is_object($rating) == true) {
+            if (is_object($rating) == true) {               
                 $client_ip = ($single_ip == true) ? Arikaim::session()->get('client_id') : null;
                 $user_id = ($single_user == true) ? Arikaim::auth()->getId() : null;
                 $log = $rating->log()->findLog($client_ip,$user_id);
@@ -99,9 +99,9 @@ class Rating extends Model
                 if (is_object($log) == true) {                  
                     return false;
                 }
-            }
+            }        
         }
-        
+
         return true;
     }
 

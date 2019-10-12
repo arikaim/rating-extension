@@ -6,6 +6,6 @@
     {% set rating = createModel('Rating','rating').findRating(rating_id,type) %}
     {% set log = rating.log().findLog() %}
     {% set value = (log is empty) ? 0 : log.value %}
-    {% set disabled = rating.isAllowed(rating_id,type) %}
-    <div title="{{ title }} {{ value }}" class="ui rating {{ disabled|ifthen(false,'disabled') }} {{ class }}" data-icon="{{ icon }}" data-rating="{{ value }}" data-max-rating="{{ max }}" type="{{ type }}" reference-id="{{ rating_id }}"></div>
+    {% set disabled = (rating is not empty) ? rating.isAllowed(rating_id,type) : true %}  
+    <div title="{{ title }}" class="ui rating {{ disabled|ifthen(false,'disabled') }} {{ class }}" data-icon="{{ icon }}" data-rating="{{ value }}" data-max-rating="{{ max }}" type="{{ type }}" reference-id="{{ rating_id }}"></div>
 {% endif %}
