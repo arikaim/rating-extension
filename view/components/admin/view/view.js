@@ -45,8 +45,7 @@ function RatingView() {
                 id: 'tab_content',
                 component: 'rating::admin.logs',
                 params: { type: type, reference_id: reference_id }
-            }); 
-            
+            });  
         });
     };
 }
