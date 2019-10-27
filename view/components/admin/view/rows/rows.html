@@ -4,10 +4,7 @@
     {% for item in items.getItems() %}
     {% set data_title = component('system:admin.orm.model.name',{ type: item.type, uuid: item.reference_id })|striptags %}
     <tr id="{{ item.uuid }}">
-        <td>
-            <button class="ui icon mini basic button edit-button" {{ buttons.edit.title|attr('title') }} uuid="{{ item.uuid }}">
-                <i class="icon edit"></i>
-            </button>
+        <td>           
             <button class="ui icon mini basic button delete-button" {{ buttons.delete.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ data_title }}">
                 <i class="icon trash orange"></i>
             </button>  

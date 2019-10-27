@@ -21,7 +21,7 @@ class RatingSchema extends Schema
      *
      * @var string
      */
-    protected $table_name = "rating";
+    protected $tableName = "rating";
 
     /**
      * Create table

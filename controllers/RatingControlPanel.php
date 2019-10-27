@@ -11,7 +11,6 @@ namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Controllers\ApiController;
-use Arikaim\Core\Arikaim;
 
 /**
  * Rating control panel controler
@@ -41,8 +40,7 @@ class RatingControlPanel extends ApiController
         $this->requireControlPanelPermission();
         
         $this->onDataValid(function($data) {
-            $category = Model::Tags('category');
-                                                
+            $category = Model::Tags('category');                                                
             $model = $category->create($data->toArray());
 
             if (is_object($model) == true) {                      
@@ -50,7 +48,7 @@ class RatingControlPanel extends ApiController
             } else {
                 $result = false;
             }
-            $this->setResponse($result,function() use($model,$data) {                                
+            $this->setResponse($result,function() use($model) {                                
                 $this
                     ->message('add')
                     ->field('id',$model->id)

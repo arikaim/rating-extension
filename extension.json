@@ -5,7 +5,7 @@
     "type": "user",
     "description": "Rating any type of item.",
     "short_description": "Manage rating.",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "position": "3",
     "repository": "https://github.com/arikaim/rating-extension.git",
     "admin_menu": {        

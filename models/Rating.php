@@ -43,11 +43,22 @@ class Rating extends Model
         return ($this->summary / $this->rated_count);
     }
 
+    /**
+     * Rating logs relation
+     *
+     * @return mixed
+     */
     public function logs()
     {
         return $this->hasMany(RatingLogs::class,'rating_id');
     }
 
+    /**
+     * Remove rating
+     *
+     * @param string|integer $uuid
+     * @return boolean
+     */
     public function remove($uuid)
     {
         $rating = $this->findById($uuid);
@@ -59,6 +70,14 @@ class Rating extends Model
         return false;     
     }
 
+    /**
+     * Add rating
+     *
+     * @param integer $id
+     * @param string $type
+     * @param float $value
+     * @return Model
+     */
     public function add($id, $type, $value)
     {
         $value = number_format($value,2);
@@ -77,10 +96,17 @@ class Rating extends Model
         return $rating;
     }
 
+    /**
+     * Return true if rating is allowed 
+     *
+     * @param integer $id
+     * @param string $type
+     * @return boolean
+     */
     public function isAllowed($id, $type)
     {
-        $single_ip = Arikaim::options()->get('rating.single.ip',true);
-        $single_user = Arikaim::options()->get('rating.single.user',true);
+        $uniqueIp = Arikaim::options()->get('rating.single.ip',true);
+        $singleUser = Arikaim::options()->get('rating.single.user',true);
         $anonymous = Arikaim::options()->get('rating.allow.anonymous',false);
 
         if ($anonymous == false) {                        
@@ -89,12 +115,12 @@ class Rating extends Model
             }
         }
     
-        if ($single_ip == true || $single_user == true) {
+        if ($uniqueIp == true || $singleUser == true) {
             $rating = $this->findRating($id,$type);
             if (is_object($rating) == true) {               
-                $client_ip = ($single_ip == true) ? Arikaim::session()->get('client_id') : null;
-                $user_id = ($single_user == true) ? Arikaim::auth()->getId() : null;
-                $log = $rating->log()->findLog($client_ip,$user_id);
+                $clientIp = ($uniqueIp == true) ? Arikaim::session()->get('client_id') : null;
+                $userId = ($singleUser == true) ? Arikaim::auth()->getId() : null;
+                $log = $rating->log()->findLog($clientIp,$userId);
 
                 if (is_object($log) == true) {                  
                     return false;
@@ -105,6 +131,11 @@ class Rating extends Model
         return true;
     }
 
+    /**
+     *  Create rating log Model
+     *
+     * @return Model
+     */
     public function log()
     {
         $log = new RatingLogs();
@@ -112,16 +143,38 @@ class Rating extends Model
         return $log;
     }
 
+    /**
+     * Return true if rating exist
+     *
+     * @param integer $id
+     * @param string $type
+     * @return boolean
+     */
     public function hasRating($id, $type)
     {
         return is_object($this->findRating($id,$type));
     }
 
+    /**
+     * Find rating
+     *
+     * @param integer $id
+     * @param string $type
+     * @return Model
+     */
     public function findRating($id, $type)
     {
         return $this->where('reference_id','=',$id)->where('type','=',$type)->first();
     }
 
+    /**
+     * Update rating
+     *
+     * @param integer $id
+     * @param string $type
+     * @param float $value
+     * @return boolean
+     */
     public function updateRating($id, $type, $value)
     {
         $rating = $this->findRating($id,$type);
@@ -130,6 +183,7 @@ class Rating extends Model
         }
         $value = number_format($value,2);
         $info = ['reference_id' => $id,'type' => $type, 'summary' => $value];
+
         return $rating->update($info);
     }
 }

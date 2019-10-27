@@ -40,9 +40,16 @@ class Rating extends Extension
         return true;
     }
     
+    /**
+     * UnInstall
+     *
+     * @return boolean
+     */
     public function unInstall()
     {
         $this->dropDbTable('RatingLogsSchema');
-        $this->dropDbTable('RatingSchema');        
+        $this->dropDbTable('RatingSchema');   
+        
+        return true;
     }
 }

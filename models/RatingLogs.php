@@ -24,7 +24,12 @@ class RatingLogs extends Model
         UserRelation,   
         DateCreated,
         Find;
-       
+    
+    /**
+     * Table name
+     *
+     * @var string
+     */
     protected $table = "rating_logs";
 
     protected $fillable = [
@@ -37,39 +42,58 @@ class RatingLogs extends Model
    
     public $timestamps = false;
     
-    public function hasLog($rating_id, $ip = null, $user_id = null)
+    /**
+     * Return true if rating exist
+     *
+     * @param integer $ratingId
+     * @param string $ip
+     * @param integer $userId
+     * @return boolean
+     */
+    public function hasLog($ratingId, $ip = null, $userId = null)
     {
-        return is_object($this->findLog($rating_id,$ip,$user_id));                 
+        return is_object($this->findLog($ratingId,$ip,$userId));                 
     } 
     
-    public function add($rating_id, $value)
+    /**
+     * Add rating log
+     *
+     * @param integer $ratingId
+     * @param float $value
+     * @return Model
+     */
+    public function add($ratingId, $value)
     {
-        $client_ip = Arikaim::session()->get('client_ip',null);      
-        $user_id = Arikaim::auth()->getId();
+        $clientIp = Arikaim::session()->get('client_ip',null);      
+        $userId = Arikaim::auth()->getId();
 
         $log = $this->create([
-            'rating_id'  => $rating_id,
+            'rating_id'  => $ratingId,
             'value'      => $value,
-            'ip'         => $client_ip,
-            'user_id'    => $user_id
+            'ip'         => $clientIp,
+            'user_id'    => $userId
         ]);
 
         return $log;
     } 
 
-    public function findLog($ip = null, $user_id = null, $rating_id = null)
+    /**
+     * Find rating log
+     *
+     * @param string $ip
+     * @param integer $userId
+     * @param integer $ratingId
+     * @return Model|null
+     */
+    public function findLog($ip = null, $userId = null, $ratingId = null)
     {
-        $rating_id = (empty($rating_id) == true) ? $this->rating_id : $rating_id;
-        if (empty($user_id) == true) {
-            $user_id = Arikaim::auth()->getId();
-        }
-        if (empty($ip) == true) {
-            $ip = Arikaim::session()->get('client_ip',null);      
-        }
-
+        $ratingId = (empty($ratingId) == true) ? $this->rating_id : $ratingId;
+        $userId = (empty($userId) == true) ? Arikaim::auth()->getId() : $userId;         
+        $ip = (empty($ip) == true) ? Arikaim::session()->get('client_ip',null) : $ip;
+           
         $model = $this
-            ->where('rating_id','=',$rating_id)
-            ->where('user_id','=',$user_id)
+            ->where('rating_id','=',$ratingId)
+            ->where('user_id','=',$userId)
             ->where('ip','=',$ip)
             ->orderBy('date_created', 'desc');
 
