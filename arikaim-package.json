@@ -1,18 +1,19 @@
 {
     "title": "Rating",
-    "icon": "star",
+    "name": "rating",
+    "package-type": "extension",
     "class": "Rating",
     "type": "user",
     "description": "Rating any type of item.",
-    "short_description": "Manage rating.",
-    "version": "1.0.2",
+    "short-description": "Manage rating.",
+    "version": "1.0.3",
     "position": "3",
     "repository": "https://github.com/arikaim/rating-extension.git",
-    "admin_menu": {        
+    "admin-menu": {        
         "title": "Rating",
         "icon": "star",
-        "page_title": "Rating",
-        "page_icon": "star",       
+        "page-title": "Rating",
+        "page-icon": "star",       
         "component": "rating::admin"
     }
 }
