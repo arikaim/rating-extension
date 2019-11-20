@@ -3,7 +3,7 @@
  * Arikaim
  *
  * @link        http://www.arikaim.com
- * @copyright   Copyright (c) 2016-2018 Konstantin Atanasov <info@arikaim.com>
+ * @copyright   Copyright (c)  Konstantin Atanasov <info@arikaim.com>
  * @license     http://www.arikaim.com/license
  * 
 */
@@ -12,6 +12,7 @@ namespace Arikaim\Extensions\Rating\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use Arikaim\Core\Arikaim;
+use Arikaim\Core\Http\Session;
 
 use Arikaim\Core\Traits\Db\Uuid;
 use Arikaim\Core\Traits\Db\Find;
@@ -64,7 +65,7 @@ class RatingLogs extends Model
      */
     public function add($ratingId, $value)
     {
-        $clientIp = Arikaim::session()->get('client_ip',null);      
+        $clientIp = Session::get('client_ip',null);      
         $userId = Arikaim::auth()->getId();
 
         $log = $this->create([
@@ -89,7 +90,7 @@ class RatingLogs extends Model
     {
         $ratingId = (empty($ratingId) == true) ? $this->rating_id : $ratingId;
         $userId = (empty($userId) == true) ? Arikaim::auth()->getId() : $userId;         
-        $ip = (empty($ip) == true) ? Arikaim::session()->get('client_ip',null) : $ip;
+        $ip = (empty($ip) == true) ? Session::get('client_ip',null) : $ip;
            
         $model = $this
             ->where('rating_id','=',$ratingId)

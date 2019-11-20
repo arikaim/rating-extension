@@ -3,7 +3,7 @@
  * Arikaim
  *
  * @link        http://www.arikaim.com
- * @copyright   Copyright (c) 2016-2018 Konstantin Atanasov <info@arikaim.com>
+ * @copyright   Copyright (c)  Konstantin Atanasov <info@arikaim.com>
  * @license     http://www.arikaim.com/license
  * 
 */
@@ -12,6 +12,7 @@ namespace Arikaim\Extensions\Rating\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use Arikaim\Core\Arikaim;
+use Arikaim\Core\Http\Session;
 use Arikaim\Extensions\Rating\Models\RatingLogs;
 
 use Arikaim\Core\Traits\Db\Uuid;
@@ -118,7 +119,7 @@ class Rating extends Model
         if ($uniqueIp == true || $singleUser == true) {
             $rating = $this->findRating($id,$type);
             if (is_object($rating) == true) {               
-                $clientIp = ($uniqueIp == true) ? Arikaim::session()->get('client_id') : null;
+                $clientIp = ($uniqueIp == true) ? Session::get('client_id') : null;
                 $userId = ($singleUser == true) ? Arikaim::auth()->getId() : null;
                 $log = $rating->log()->findLog($clientIp,$userId);
 

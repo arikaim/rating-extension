@@ -30,7 +30,7 @@ function RatingLogs() {
                 description: message
             },function() {
                 self.delete(uuid,function(result) {
-                    $('#' + uuid).remove();                             
+                    arikaim.ui.table.removeRow('#' + uuid);                           
                 });
             });
         });
