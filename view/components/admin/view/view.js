@@ -5,8 +5,6 @@
  *  @license    http://www.arikaim.com/license
  *  http://www.arikaim.com
  * 
- *  Extension: Rating
- *  Component: ratging::admin.view
 */
 
 function RatingView() {
@@ -18,13 +16,13 @@ function RatingView() {
 
     this.initRows = function() {
         var component = arikaim.component.get('rating::admin');
-        var remove_message = component.getProperty('messages.remove.content');
+        var removeMessage = component.getProperty('messages.remove.content');
 
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
 
-            var message = arikaim.ui.template.render(remove_message,{ title: title });
+            var message = arikaim.ui.template.render(removeMessage,{ title: title });
             modal.confirmDelete({ 
                 title: component.getProperty('messages.remove.title'),
                 description: message
@@ -37,14 +35,17 @@ function RatingView() {
 
         arikaim.ui.button('.view-logs',function(element) {
             var type = $(element).attr('type');
-            var reference_id = $(element).attr('reference-id');
+            var referenceId = $(element).attr('reference-id');
 
             arikaim.ui.setActiveTab('#view_logs');
 
             arikaim.page.loadContent({
                 id: 'tab_content',
                 component: 'rating::admin.logs',
-                params: { type: type, reference_id: reference_id }
+                params: { 
+                    type: type,
+                    reference_id: referenceId 
+                }
             });  
         });
     };

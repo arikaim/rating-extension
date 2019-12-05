@@ -5,7 +5,6 @@
  *  @license    http://www.arikaim.com/license
  *  http://www.arikaim.com
  * 
- *  Extension: Rating
  */
 
 function Rating() {
@@ -25,7 +24,6 @@ function Rating() {
     };
 
     this.init = function() {
-
         $('.rating').rating({             
             onRate: function(value) {
                 var id = $(this).attr('reference-id');
@@ -38,7 +36,6 @@ function Rating() {
                 });
             }
         });
-
     };
 }
 

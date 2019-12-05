@@ -28,40 +28,6 @@ class RatingControlPanel extends ApiController
     }
 
     /**
-     * Add new rating
-     *
-     * @param object $request
-     * @param object $response
-     * @param object $data
-     * @return object
-    */
-    public function addController($request, $response, $data) 
-    {       
-        $this->requireControlPanelPermission();
-        
-        $this->onDataValid(function($data) {
-            $category = Model::Tags('category');                                                
-            $model = $category->create($data->toArray());
-
-            if (is_object($model) == true) {                      
-                $result = $model->saveTranslation($data->slice(['title','description']),$data['language']);                              
-            } else {
-                $result = false;
-            }
-            $this->setResponse($result,function() use($model) {                                
-                $this
-                    ->message('add')
-                    ->field('id',$model->id)
-                    ->field('uuid',$model->uuid);           
-            },'errors.add');
-        });
-        $data           
-            ->addRule('text:min=2','tag')
-            ->addRule('text:min=2|max=2','language')
-            ->validate();       
-    }
-
-    /**
      * Delete rating
      *
      * @param object $request
@@ -76,6 +42,31 @@ class RatingControlPanel extends ApiController
         $this->onDataValid(function($data) {
             $uuid = $data->get('uuid');
             $result = Model::Rating('rating')->remove($uuid);
+
+            $this->setResponse($result,function() use($uuid) {            
+                $this
+                    ->message('delete')
+                    ->field('uuid',$uuid);  
+            },'errors.delete');
+        }); 
+        $data->validate();
+    }
+
+     /**
+     * Delete rating
+     *
+     * @param object $request
+     * @param object $response
+     * @param object $data
+     * @return object
+    */
+    public function deleteLogController($request, $response, $data)
+    {
+        $this->requireControlPanelPermission();
+
+        $this->onDataValid(function($data) {
+            $uuid = $data->get('uuid');
+            $result = Model::RatingLogs('rating')->remove($uuid);
 
             $this->setResponse($result,function() use($uuid) {            
                 $this

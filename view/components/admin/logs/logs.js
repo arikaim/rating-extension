@@ -5,8 +5,6 @@
  *  @license    http://www.arikaim.com/license
  *  http://www.arikaim.com
  * 
- *  Extension: Rating
- *  Component: ratging::admin.logs
 */
 
 function RatingLogs() {
@@ -16,18 +14,21 @@ function RatingLogs() {
         paginator.init('rating_logs');
     };
 
+    this.delete = function(uuid, onSuccess, onError) {
+        return arikaim.delete('/api/rating/admin/logs/delete/' + uuid,onSuccess,onError);          
+    };
+
     this.initRows = function() {
         var component = arikaim.component.get('rating::admin');
-        var remove_message = component.getProperty('messages.remove.content');
+        var removeMessage = component.getProperty('messages.logs.content');
 
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
 
-            var message = arikaim.ui.template.render(remove_message,{ title: title });
             modal.confirmDelete({ 
                 title: component.getProperty('messages.remove.title'),
-                description: message
+                description: removeMessage
             },function() {
                 self.delete(uuid,function(result) {
                     arikaim.ui.table.removeRow('#' + uuid);                           

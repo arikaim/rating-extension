@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Model;
 use Arikaim\Core\Arikaim;
 use Arikaim\Core\Http\Session;
 
-use Arikaim\Core\Traits\Db\Uuid;
-use Arikaim\Core\Traits\Db\Find;
-use Arikaim\Core\Traits\Db\DateCreated;
-use Arikaim\Core\Traits\Db\UserRelation;
+use Arikaim\Core\Db\Traits\Uuid;
+use Arikaim\Core\Db\Traits\Find;
+use Arikaim\Core\Db\Traits\DateCreated;
+use Arikaim\Core\Db\Traits\UserRelation;
 
 class RatingLogs extends Model  
 {
@@ -66,7 +66,7 @@ class RatingLogs extends Model
     public function add($ratingId, $value)
     {
         $clientIp = Session::get('client_ip',null);      
-        $userId = Arikaim::auth()->getId();
+        $userId = Arikaim::access()->getId();
 
         $log = $this->create([
             'rating_id'  => $ratingId,
@@ -89,7 +89,7 @@ class RatingLogs extends Model
     public function findLog($ip = null, $userId = null, $ratingId = null)
     {
         $ratingId = (empty($ratingId) == true) ? $this->rating_id : $ratingId;
-        $userId = (empty($userId) == true) ? Arikaim::auth()->getId() : $userId;         
+        $userId = (empty($userId) == true) ? Arikaim::access()->getId() : $userId;         
         $ip = (empty($ip) == true) ? Session::get('client_ip',null) : $ip;
            
         $model = $this
@@ -100,4 +100,18 @@ class RatingLogs extends Model
 
         return $model->first();
     }
+
+    /**
+     * Remove rating log
+     *
+     * @param string|integer $uuid
+     * @return boolean
+     */
+    public function remove($uuid)
+    {
+        $log = $this->findById($uuid);
+        
+        return (is_object($log) == true) ? $log->delete() : false;                     
+    }
+
 }

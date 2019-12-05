@@ -9,7 +9,7 @@
 */
 namespace Arikaim\Extensions\Rating;
 
-use Arikaim\Core\Packages\Extension\Extension;
+use Arikaim\Core\Extension\Extension;
 
 /**
  * Rating extension
@@ -28,7 +28,8 @@ class Rating extends Extension
         $this->addApiRoute('POST','/api/rating/add','Rating','add');      
         // Control Panel      
         $this->addApiRoute('PUT','/api/rating/admin/update','RatingControlPanel','update','session');        
-        $this->addApiRoute('DELETE','/api/rating/admin/delete/{uuid}','RatingControlPanel','delete','session');          
+        $this->addApiRoute('DELETE','/api/rating/admin/delete/{uuid}','RatingControlPanel','delete','session');  
+        $this->addApiRoute('DELETE','/api/rating/admin/logs/delete/{uuid}','RatingControlPanel','deleteLog','session');          
         // Create db tables
         $this->createDbTable('RatingSchema');
         $this->createDbTable('RatingLogsSchema');        

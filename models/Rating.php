@@ -15,8 +15,8 @@ use Arikaim\Core\Arikaim;
 use Arikaim\Core\Http\Session;
 use Arikaim\Extensions\Rating\Models\RatingLogs;
 
-use Arikaim\Core\Traits\Db\Uuid;
-use Arikaim\Core\Traits\Db\Find;
+use Arikaim\Core\Db\Traits\Uuid;
+use Arikaim\Core\Db\Traits\Find;
 
 class Rating extends Model  
 {
@@ -111,7 +111,7 @@ class Rating extends Model
         $anonymous = Arikaim::options()->get('rating.allow.anonymous',false);
 
         if ($anonymous == false) {                        
-            if (empty(Arikaim::auth()->getId()) == true) {               
+            if (empty(Arikaim::access()->getId()) == true) {               
                 return false;
             }
         }
@@ -120,7 +120,7 @@ class Rating extends Model
             $rating = $this->findRating($id,$type);
             if (is_object($rating) == true) {               
                 $clientIp = ($uniqueIp == true) ? Session::get('client_id') : null;
-                $userId = ($singleUser == true) ? Arikaim::auth()->getId() : null;
+                $userId = ($singleUser == true) ? Arikaim::access()->getId() : null;
                 $log = $rating->log()->findLog($clientIp,$userId);
 
                 if (is_object($log) == true) {                  

@@ -8,6 +8,10 @@
         "remove": {
             "title": "Confirm Remove",
             "content": "Confirm remove rating '<b><% title %></b>'."
+        },
+        "logs": {
+            "title": "Confirm Remove",
+            "content": "Confirm remove rating log."
         }
     }    
 }

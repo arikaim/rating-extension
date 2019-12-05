@@ -1,3 +1,5 @@
 $(document).ready(function() {
-    ratingView.initRows();  
+    safeCall('ratingView',function(obj) {
+        obj.initRows();
+    },true);     
 });

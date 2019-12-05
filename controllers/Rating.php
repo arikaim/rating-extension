@@ -69,7 +69,7 @@ class Rating extends ApiController
             $rating = Model::Rating('rating');
         
             if ($rating->isAllowed($id,$type) == false) {
-                if (empty(Arikaim::auth()->getId()) == true) {
+                if (empty(Arikaim::access()->getId()) == true) {
                     $this->error('errors.anonymous');
                 } else {
                     $this->error('errors.single');

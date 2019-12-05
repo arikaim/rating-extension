@@ -1,3 +1,5 @@
 $(document).ready(function() {
-    ratingLogs.initRows();  
+    safeCall('ratingLogs',function(obj) {
+        obj.initRows();
+    },true);         
 });
