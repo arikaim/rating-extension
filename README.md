@@ -3,12 +3,11 @@
 [License: GPL3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 
-
-### Requirements 
+#### Requirements 
   * [Arikaim CMS](https://github.com/arikaim/arikaim)
   
   
-### Install
+#### Install
 ```bash
 
 composer require arikaim/rating-extension
