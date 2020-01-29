@@ -23,8 +23,18 @@ class Rating extends Model
     use Uuid,       
         Find;
        
+    /**
+     * Db table name
+     *
+     * @var string
+     */
     protected $table = "rating";
 
+    /**
+     * Fillable attributes
+     *
+     * @var array
+     */
     protected $fillable = [
         'reference_id',
         'type',
@@ -32,6 +42,11 @@ class Rating extends Model
         'rated_count'     
     ];
     
+    /**
+     * Disable timestamps
+     *
+     * @var boolean
+     */
     public $timestamps = false;
     
     /**

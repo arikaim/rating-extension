@@ -38,9 +38,7 @@ class RatingLogsSchema extends Schema
         $table->relation('rating_id','rating');
         $table->userId();
         $table->string('ip')->nullable(true); 
-        $table->float('value',5,2)->nullable(false);
-        // index       
-        $table->index('rating_id');   
+        $table->float('value',5,2)->nullable(false);        
     }
 
     /**

@@ -19,7 +19,7 @@ class Rating extends Extension
     /**
      * Install extension routes, events, jobs ..
      *
-     * @return boolean
+     * @return void
     */
     public function install()
     {
@@ -36,21 +36,17 @@ class Rating extends Extension
         // Options
         $this->createOption('rating.allow.anonymous',true);
         $this->createOption('rating.single.user',true);
-        $this->createOption('rating.single.ip',true);
-
-        return true;
+        $this->createOption('rating.single.ip',true);       
     }
     
     /**
      * UnInstall
      *
-     * @return boolean
+     * @return void
      */
     public function unInstall()
     {
         $this->dropDbTable('RatingLogsSchema');
-        $this->dropDbTable('RatingSchema');   
-        
-        return true;
+        $this->dropDbTable('RatingSchema');          
     }
 }
