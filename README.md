@@ -8,7 +8,7 @@ Rating feature for games, blog posts, pages or other items.
   * [Arikaim CMS](https://github.com/arikaim/arikaim)
   
   
-#### Install
+#### Installation
 ```sh
 
 composer require arikaim/rating-extension
