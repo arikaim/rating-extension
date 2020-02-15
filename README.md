@@ -9,8 +9,7 @@ Rating feature for games, blog posts, pages or other items.
   
   
 #### Installation
+
 ```sh
-
 composer require arikaim/rating-extension
-
 ```
