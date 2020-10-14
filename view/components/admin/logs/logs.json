@@ -4,10 +4,13 @@
         "id": "Id",
         "value":" Value",
         "date": "Date Created",
-        "ip": "Ip"  ,
+        "ip": "Ip",
         "user": "User"            
     },
     "labels": {
-        "reference": "Reference"
+        "reference": "Reference",
+        "total": "Ratings",
+        "all": "All",
+        "average": "Average"
     }
 }

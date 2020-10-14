@@ -19,6 +19,9 @@ use Arikaim\Core\Db\Traits\Find;
 use Arikaim\Core\Db\Traits\DateCreated;
 use Arikaim\Core\Db\Traits\UserRelation;
 
+/**
+ * Rating logs model class
+ */
 class RatingLogs extends Model  
 {
     use Uuid,    
@@ -31,8 +34,13 @@ class RatingLogs extends Model
      *
      * @var string
      */
-    protected $table = "rating_logs";
+    protected $table = 'rating_logs';
 
+    /**
+     * Fillable attributes
+     *
+     * @var array
+     */
     protected $fillable = [
         'ip',
         'rating_id',
@@ -41,8 +49,25 @@ class RatingLogs extends Model
         'value'      
     ];
    
+    /**
+     * Disable timestamps
+     *
+     * @var boolean
+    */
     public $timestamps = false;
     
+    /**
+     * Ratign logs scope query
+     *
+     * @param Builder $query
+     * @param integer $id
+     * @return Builder
+     */
+    public function scopeRatingLogs($query, $id)
+    {
+        return $query->where('rating_id','=',$id);
+    } 
+
     /**
      * Return true if rating exist
      *
@@ -53,7 +78,7 @@ class RatingLogs extends Model
      */
     public function hasLog($ratingId, $ip = null, $userId = null)
     {
-        return is_object($this->findLog($ratingId,$ip,$userId));                 
+        return \is_object($this->findLog($ratingId,$ip,$userId));                 
     } 
     
     /**
@@ -111,7 +136,19 @@ class RatingLogs extends Model
     {
         $log = $this->findById($uuid);
         
-        return (is_object($log) == true) ? $log->delete() : false;                     
+        return (\is_object($log) == true) ? $log->delete() : false;                     
     }
 
+    /**
+     * Calculate araverage value
+     *
+     * @return float
+     */
+    public function calcAverage()
+    {
+        $sum = (float)$this->sum('value');
+        $count = (int)$this->count();
+      
+        return ($sum / $count);
+    }
 }

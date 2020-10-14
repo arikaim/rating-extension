@@ -35,7 +35,10 @@ function RatingView() {
         arikaim.ui.button('.view-logs',function(element) {
             var type = $(element).attr('type');
             var referenceId = $(element).attr('reference-id');
+            var ratingUuid = $(element).attr('rating-uuid');
 
+            console.log(ratingUuid);
+            
             arikaim.ui.setActiveTab('#view_logs');
 
             arikaim.page.loadContent({
@@ -43,6 +46,7 @@ function RatingView() {
                 component: 'rating::admin.logs',
                 params: { 
                     type: type,
+                    rating_uuid: ratingUuid,
                     reference_id: referenceId 
                 }
             });  

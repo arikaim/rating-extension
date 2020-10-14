@@ -10,12 +10,12 @@
 namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
-use Arikaim\Core\Controllers\ApiController;
+use Arikaim\Core\Controllers\ControlPanelApiController;
 
 /**
  * Rating control panel controler
 */
-class RatingControlPanel extends ApiController
+class RatingControlPanel extends ControlPanelApiController
 {
     /**
      * Init controller
@@ -28,17 +28,15 @@ class RatingControlPanel extends ApiController
     }
 
     /**
-     * Delete rating
+     *  Delete rating
      *
-     * @param object $request
-     * @param object $response
-     * @param object $data
-     * @return object
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param Validator $data
+     * @return Psr\Http\Message\ResponseInterface
     */
     public function deleteController($request, $response, $data)
     { 
-        $this->requireControlPanelPermission();
-
         $this->onDataValid(function($data) {
             $uuid = $data->get('uuid');
             $result = Model::Rating('rating')->remove($uuid);
@@ -51,19 +49,17 @@ class RatingControlPanel extends ApiController
         }); 
         $data->validate();
     }
-
-     /**
-     * Delete rating
+    
+    /**
+     *  Delete rating log
      *
-     * @param object $request
-     * @param object $response
-     * @param object $data
-     * @return object
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param Validator $data
+     * @return Psr\Http\Message\ResponseInterface
     */
     public function deleteLogController($request, $response, $data)
     {
-        $this->requireControlPanelPermission();
-
         $this->onDataValid(function($data) {
             $uuid = $data->get('uuid');
             $result = Model::RatingLogs('rating')->remove($uuid);

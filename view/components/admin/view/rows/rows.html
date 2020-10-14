@@ -7,8 +7,8 @@
         <td>           
             <button class="ui icon mini basic button delete-button" {{ buttons.delete.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ data_title }}">
                 <i class="icon trash orange"></i>
-            </button>  
-            <button type="{{ item.type }}" reference-id="{{ item.reference_id }}" class="ui icon mini basic button view-logs" {{ buttons.losg.title|attr('title') }} uuid="{{ item.uuid }}">
+            </button> 
+            <button type="{{ item.type }}" rating-uuid="{{ item.uuid }}" reference-id="{{ item.reference_id }}" class="ui icon mini basic button view-logs" {{ buttons.logs.title|attr('title') }} uuid="{{ item.uuid }}">
                 <i class="icon history"></i>
             </button>        
         </td>

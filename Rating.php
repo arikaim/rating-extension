@@ -24,8 +24,8 @@ class Rating extends Extension
     public function install()
     {
         // Api Routes
-        $this->addApiRoute('GET','/api/rating/{id}','Rating','read');         
-        $this->addApiRoute('POST','/api/rating/add','Rating','add');      
+        $this->addApiRoute('GET','/api/rating/{id}','RatingApi','read');         
+        $this->addApiRoute('POST','/api/rating/add','RatingApi','add');      
         // Control Panel      
         $this->addApiRoute('PUT','/api/rating/admin/update','RatingControlPanel','update','session');        
         $this->addApiRoute('DELETE','/api/rating/admin/delete/{uuid}','RatingControlPanel','delete','session');  
@@ -45,8 +45,6 @@ class Rating extends Extension
      * @return void
      */
     public function unInstall()
-    {
-        $this->dropDbTable('RatingLogsSchema');
-        $this->dropDbTable('RatingSchema');          
+    {       
     }
 }

@@ -11,12 +11,11 @@ namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Controllers\ApiController;
-use Arikaim\Core\Arikaim;
 
 /**
  * Rating api controler
 */
-class Rating extends ApiController
+class RatingApi extends ApiController
 {
     /**
      * Init controller
@@ -29,12 +28,12 @@ class Rating extends ApiController
     }
 
     /**
-     * Read rating
+     *  Read rating
      *
-     * @param object $request
-     * @param object $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @param Validator $data
-     * @return object
+     * @return Psr\Http\Message\ResponseInterface
     */
     public function readController($request, $response, $data)
     {
@@ -42,7 +41,7 @@ class Rating extends ApiController
             $id = $data->get('id');
             $rating = Model::Rating('rating')->findById($id);
 
-            $this->setResponse(is_object($rating),function() use($rating) {                  
+            $this->setResponse(\is_object($rating),function() use($rating) {                  
                 $this
                     ->message('read')
                     ->field('rating',$rating->toArray());                  
@@ -54,10 +53,10 @@ class Rating extends ApiController
     /**
      * Add rating
      *
-     * @param object $request
-     * @param object $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @param Validator $data
-     * @return object
+     * @return Psr\Http\Message\ResponseInterface
     */
     public function addController($request, $response, $data)
     {
@@ -67,9 +66,12 @@ class Rating extends ApiController
             $value = $data->get('value');
 
             $rating = Model::Rating('rating');
-        
-            if ($rating->isAllowed($id,$type) == false) {
-                if (empty(Arikaim::access()->getId()) == true) {
+            $curretnUserId = $this->get('access')->getId();
+
+            $options = $this->get('options')->searchOptions('rating.',true);
+
+            if ($rating->isAllowed($id,$type,$curretnUserId,$options) == false) {
+                if (empty($curretnUserId) == true) {
                     $this->error('errors.anonymous');
                 } else {
                     $this->error('errors.single');
@@ -78,10 +80,10 @@ class Rating extends ApiController
             }
 
             $rating = $rating->add($id,$type,$value);
-            $this->setResponse(is_object($rating),function() use($rating) {                  
+            $this->setResponse(\is_object($rating),function() use($rating) {                  
                 $this
                     ->message('add')
-                    ->field('average',number_format($rating->average,2))
+                    ->field('average',\number_format($rating->average,2))
                     ->field('uuid',$rating->uuid);                  
             },'errors.add');                     
         });

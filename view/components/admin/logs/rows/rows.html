@@ -1,5 +1,9 @@
 {% component 'components:view.rows' %}
-    {% set logs = createModel('RatingLogs','rating').orderBy('id') %}
+    {% set logs = createModel('RatingLogs','rating') %}
+    {% if rating_id is not empty %}
+        {% set logs = logs.ratingLogs(rating_id) %}
+    {% endif %}
+    {% set logs = logs.orderBy('id') %}
     {% set items = paginate(logs,'rating.logs') %}   
     {% for item in items.getItems() %}
     <tr id="{{ item.uuid }}">

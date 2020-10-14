@@ -1,9 +1,44 @@
-<div class="ui stackable grid">
-    <div class="sixteen wide column mt-10 center aligned">           
-        {% if reference_id is not null %}
-        <span class="font-bold mr-1">{{ labels.reference }}</span>
-        {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}       
-        {% endif %}       
+{% if rating_uuid is not empty %}
+    {% set rating = createModel('Rating','rating').findById(rating_uuid) %}
+{% endif %}
+{% set logs = createModel('RatingLogs','rating') %}
+{% if rating is not empty %}
+    {% set logs = logs.ratingLogs(rating.id) %}
+{% endif %}
+{% set average = (logs.sum('value') / logs.count()) %}
+
+<div class="ui segment">
+    <div class="ui stackable grid">
+        <div class="five wide column">       
+            <span class="font-bold mr-1">{{ labels.reference }}</span>    
+            {% if reference_id is not null %}                
+                {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
+            {% else %}
+                {{ labels.all }}     
+            {% endif %}       
+        </div>
+        <div class="eight wide column">
+        </div>
+        <div class="one wide column right aligned">
+            <div class="ui mini horizontal olive statistic">
+                <div class="value">
+                    {{ average|numberFormat }}
+                </div>
+                <div class="label">
+                    {{ labels.average }}
+                </div>
+            </div>                     
+        </div>
+        <div class="one wide column right aligned">
+            <div class="ui mini horizontal olive statistic">
+                <div class="value">
+                    {{ logs.count() }}
+                </div>
+                <div class="label">
+                    {{ labels.total }}
+                </div>
+            </div>                     
+        </div>
     </div>
 </div>
 <div class="ui stackable text menu">
@@ -24,7 +59,7 @@
             </tr>
         </thead>
         <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
-            {{ component('rating::admin.logs.rows') }} 
+            {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
         </tbody>
     </table> 
     <div id="paginator" class="mt-2">      
