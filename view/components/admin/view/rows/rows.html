@@ -1,7 +1,12 @@
-{% component 'components:view.rows' %}
-    {% set rating = createModel('Rating','rating').orderBy('id') %}
-    {% set items = paginate(rating,'rating') %}   
-    {% for item in items.getItems() %}
+{% set rating = createModel('Rating','rating').orderBy('id') %}
+{% set items = paginate(rating,'rating') %}   
+{% set items = items.getItems() %}
+{% if items|length == 0 %}
+<tr>
+    <td>..</td>
+</tr>
+{% endif %}
+{% for item in items %}
     {% set data_title = component('system:admin.orm.model.name',{ type: item.type, uuid: item.reference_id })|striptags %}
     <tr id="{{ item.uuid }}">
         <td>           
@@ -22,5 +27,4 @@
             {{ item.rated_count }}
         </td>
     </tr>
-    {% endfor %}
-{% endcomponent %}
+{% endfor %}

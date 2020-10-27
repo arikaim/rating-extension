@@ -12,7 +12,6 @@ namespace Arikaim\Extensions\Rating\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use Arikaim\Extensions\Rating\Models\RatingLogs;
-use Arikaim\Core\Http\Session;
 
 use Arikaim\Core\Db\Traits\Uuid;
 use Arikaim\Core\Db\Traits\Find;
@@ -97,10 +96,14 @@ class Rating extends Model
      * @param float $value
      * @return Model
      */
-    public function add($id, $type, $value)
+    public function add($id, $type, $value, $userId, $clientIp)
     {
         $value = \number_format($value,2);
-        $info = ['reference_id' => $id,'type' => $type, 'summary' => $value];
+        $info = [
+            'reference_id' => $id,
+            'type'         => $type, 
+            'summary'      => $value
+        ];
 
         $rating = $this->findRating($id,$type);
         if (\is_object($rating) == true) {
@@ -110,7 +113,7 @@ class Rating extends Model
         } else {
             $rating = $this->create($info);
         }
-        $rating->log()->add($rating->id,$value);
+        $rating->log()->add($rating->id,$value,$userId,$clientIp);
 
         return $rating;
     }
@@ -145,11 +148,13 @@ class Rating extends Model
      *
      * @param integer $id
      * @param string $type
-     * @return Model
+     * @return Model|false
      */
     public function findRating($id, $type)
     {
-        return $this->where('reference_id','=',$id)->where('type','=',$type)->first();
+        $model = $this->where('reference_id','=',$id)->where('type','=',$type)->first();
+
+        return (\is_object($model) == true) ? $model : false;
     }
 
     /**
@@ -186,24 +191,22 @@ class Rating extends Model
      * @param array $options
      * @return boolean
      */
-    public function isAllowed($id, $type, $currentUserId, array $options)
+    public function isAllowed($id, $type, $currentUserId, $clientIp, array $options)
     {
-        $uniqueIp = (isset($options['rating.single.ip']) == true) ? (bool)$options['rating.single.ip'] : true;
-        $singleUser = (isset($options['rating.single.user']) == true) ? (bool)$options['rating.single.user'] : true;
-        $anonymous = (isset($options['rating.allow.anonymous']) == true) ? (bool)$options['rating.allow.anonymous'] : true;
+        $uniqueIp = (bool)$options['rating.single.ip'] ?? false;
+        $singleUser = (bool)$options['rating.single.user'] ?? false;
+        $anonymous = (bool)$options['rating.allow.anonymous'] ?? false;
     
-        if ($anonymous == false) {                        
-            if (empty($currentUserId) == true) {               
-                return false;
-            }
+        if (($anonymous == false) && (empty($currentUserId) == true)) {                                             
+            return false;          
         }
     
         if ($uniqueIp == true || $singleUser == true) {
             $rating = $this->findRating($id,$type);
             if (\is_object($rating) == true) {               
-                $clientIp = ($uniqueIp == true) ? Session::get('client_id') : null;
+                $ip = ($uniqueIp == true) ? $clientIp : null;
                 $userId = ($singleUser == true) ? $currentUserId : null;
-                $log = $rating->log()->findLog($clientIp,$userId);
+                $log = $rating->log()->findLog($ip,$userId);
 
                 if (\is_object($log) == true) {                  
                     return false;

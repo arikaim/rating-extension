@@ -11,9 +11,6 @@ namespace Arikaim\Extensions\Rating\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Arikaim\Core\Arikaim;
-use Arikaim\Core\Http\Session;
-
 use Arikaim\Core\Db\Traits\Uuid;
 use Arikaim\Core\Db\Traits\Find;
 use Arikaim\Core\Db\Traits\DateCreated;
@@ -78,7 +75,7 @@ class RatingLogs extends Model
      */
     public function hasLog($ratingId, $ip = null, $userId = null)
     {
-        return \is_object($this->findLog($ratingId,$ip,$userId));                 
+        return \is_object($this->findLog($ip,$userId,$ratingId));                 
     } 
     
     /**
@@ -86,13 +83,12 @@ class RatingLogs extends Model
      *
      * @param integer $ratingId
      * @param float $value
+     * @param int|null $userId
+     * @param string|null $clientIp
      * @return Model
      */
-    public function add($ratingId, $value)
+    public function add($ratingId, $value, $userId, $clientIp = null)
     {
-        $clientIp = Session::get('client_ip',null);      
-        $userId = Arikaim::access()->getId();
-
         $log = $this->create([
             'rating_id'  => $ratingId,
             'value'      => $value,
@@ -113,17 +109,17 @@ class RatingLogs extends Model
      */
     public function findLog($ip = null, $userId = null, $ratingId = null)
     {
-        $ratingId = (empty($ratingId) == true) ? $this->rating_id : $ratingId;
-        $userId = (empty($userId) == true) ? Arikaim::access()->getId() : $userId;         
-        $ip = (empty($ip) == true) ? Session::get('client_ip',null) : $ip;
-           
-        $model = $this
-            ->where('rating_id','=',$ratingId)
-            ->where('user_id','=',$userId)
-            ->where('ip','=',$ip)
-            ->orderBy('date_created', 'desc');
+        $ratingId = $ratingId ?? $this->rating_id;                
+        $model = $this->where('rating_id','=',$ratingId);
 
-        return $model->first();
+        if (empty($userId) == false) {
+            $model = $model->where('user_id','=',$userId);
+        }
+        if (empty($ip) == false) {
+            $model = $model->where('ip','=',$ip);
+        }
+       
+        return $model->orderBy('date_created', 'desc')->first();
     }
 
     /**

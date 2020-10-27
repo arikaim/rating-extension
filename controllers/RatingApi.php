@@ -11,12 +11,25 @@ namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Controllers\ApiController;
+use Arikaim\Core\Middleware\ClientIpMiddleware;
 
 /**
  * Rating api controler
 */
 class RatingApi extends ApiController
 {
+    /**
+    * Constructor
+    * 
+    * @param Container|null $container
+    */
+    public function __construct($container = null) 
+    {        
+        $this->addMiddleware(ClientIpMiddleware::class);
+
+        parent::__construct($container);
+    }
+
     /**
      * Init controller
      *
@@ -66,11 +79,12 @@ class RatingApi extends ApiController
             $value = $data->get('value');
 
             $rating = Model::Rating('rating');
-            $curretnUserId = $this->get('access')->getId();
+            $curretnUserId = $this->getUserId();
+            $clientIp = $request->getAttribute('client_ip');   
 
             $options = $this->get('options')->searchOptions('rating.',true);
 
-            if ($rating->isAllowed($id,$type,$curretnUserId,$options) == false) {
+            if ($rating->isAllowed($id,$type,$curretnUserId,$clientIp,$options) == false) {
                 if (empty($curretnUserId) == true) {
                     $this->error('errors.anonymous');
                 } else {
@@ -78,8 +92,8 @@ class RatingApi extends ApiController
                 }
                 return;
             }
-
-            $rating = $rating->add($id,$type,$value);
+            
+            $rating = $rating->add($id,$type,$value,$curretnUserId,$clientIp);
             $this->setResponse(\is_object($rating),function() use($rating) {                  
                 $this
                     ->message('add')
