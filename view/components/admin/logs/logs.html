@@ -5,22 +5,29 @@
 {% if rating is not empty %}
     {% set logs = logs.ratingLogs(rating.id) %}
 {% endif %}
-{% set average = (logs.sum('value') / logs.count()) %}
+{% set sum = logs.sum('value') %}
+{% if logs.count() == 0 or sum == 0 %}
+    {% set average = 0 %}
+{% else %}
+    {% set average = (sum / logs.count()) %}
+{% endif %}
 
 <div class="ui segment">
     <div class="ui stackable grid">
         <div class="five wide column">       
-            <span class="font-bold mr-1">{{ labels.reference }}</span>    
-            {% if reference_id is not null %}                
-                {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
-            {% else %}
-                {{ labels.all }}     
-            {% endif %}       
+            <div class="font-bold mr-1 pt-3">
+                {{ labels.reference }}
+                {% if reference_id is not null %}                
+                    {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
+                {% else %}
+                    <span>{{ labels.all }}</span>
+                {% endif %}     
+            </div>                 
         </div>
         <div class="eight wide column">
         </div>
         <div class="one wide column right aligned">
-            <div class="ui mini horizontal olive statistic">
+            <div class="ui mini horizontal olive statistic pt-3">
                 <div class="value">
                     {{ average|numberFormat }}
                 </div>
@@ -30,7 +37,7 @@
             </div>                     
         </div>
         <div class="one wide column right aligned">
-            <div class="ui mini horizontal olive statistic">
+            <div class="ui mini horizontal olive statistic pt-3">
                 <div class="value">
                     {{ logs.count() }}
                 </div>
@@ -39,30 +46,26 @@
                 </div>
             </div>                     
         </div>
+        <div class="one wide column right floated">       
+            {{ component('components:paginator.dropdown',{ namespace: 'rating.logs' }) }}
+        </div>
     </div>
 </div>
-<div class="ui stackable text menu">
-    <div class="item right floated">       
-        {{ component('components:paginator.dropdown',{ namespace: 'rating.logs' }) }}
-    </div>
-</div>
-<div class="ui mt-2">
-    <table class="ui compact stackable selectable borderless basic table">
-        <thead class="table-head">
-            <tr>              
-                <th class="one wide collapsing left aligned">{{ columns.action }}</th>
-                <th class="collapsing two wide">{{ columns.date }}</th>
-                <th class="one wide collapsing">{{ columns.id }}</th>    
-                <th class="one wide collapsing">{{ columns.value }}</th>    
-                <th class="ten wide">{{ columns.ip }}</th>   
-                <th class="ten wide">{{ columns.user }}</th>                                                            
-            </tr>
-        </thead>
-        <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
-            {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
-        </tbody>
-    </table> 
-    <div id="paginator" class="mt-2">      
-        {{ component("components:paginator",{ namespace: 'rating.logs' }) }}
-    </div>
+<table class="ui compact stackable selectable borderless basic table">
+    <thead class="table-head">
+        <tr>              
+            <th class="one wide collapsing left aligned">{{ columns.action }}</th>
+            <th class="collapsing two wide">{{ columns.date }}</th>
+            <th class="one wide collapsing">{{ columns.id }}</th>    
+            <th class="one wide collapsing">{{ columns.value }}</th>    
+            <th class="ten wide">{{ columns.ip }}</th>   
+            <th class="ten wide">{{ columns.user }}</th>                                                            
+        </tr>
+    </thead>
+    <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
+        {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
+    </tbody>
+</table> 
+<div id="paginator" class="mt-2">      
+    {{ component("components:paginator",{ namespace: 'rating.logs' }) }}
 </div>

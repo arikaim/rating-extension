@@ -8,9 +8,24 @@
 
 function RatingLogs() {
     var self = this;
+    this.messages = null;
+
+    this.loadMessages = function() {
+        if (isObject(this.messages) == true) {
+            return;
+        }
+
+        arikaim.component.loadProperties('rating::admin',function(params) { 
+            self.messages = params.messages;
+        }); 
+    };
 
     this.init = function() {
-        paginator.init('rating_logs');
+        paginator.init('rating_logs',{
+            name: 'rating::admin.logs.rows' 
+        },'rating.logs');
+        
+        this.loadMessages();
     };
 
     this.delete = function(uuid, onSuccess, onError) {
@@ -18,16 +33,14 @@ function RatingLogs() {
     };
 
     this.initRows = function() {
-        var component = arikaim.component.get('rating::admin');
-        var removeMessage = component.getProperty('messages.logs.content');
-
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
+            var message = arikaim.ui.template.render(self.messages.logs.content,{ title: title });
 
             modal.confirmDelete({ 
-                title: component.getProperty('messages.remove.title'),
-                description: removeMessage
+                title: self.messages.logs.title,
+                description: message
             },function() {
                 self.delete(uuid,function(result) {
                     arikaim.ui.table.removeRow('#' + uuid);                           
@@ -56,6 +69,7 @@ function RatingLogs() {
 
 var ratingLogs = new RatingLogs();
 
-arikaim.page.onReady(function() {
+$(document).ready(function() {
     ratingLogs.init();   
+    ratingLogs.initRows();
 });

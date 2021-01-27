@@ -1,4 +1,9 @@
 {
+    "include": {
+        "js": [
+            "rating::admin.logs"
+        ]
+    },
     "access": {
         "auth": "session",
         "redirect": "/admin",

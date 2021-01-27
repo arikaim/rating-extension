@@ -8,22 +8,32 @@
 
 function RatingView() {
     var self = this;
+    this.messages = null;
+
+    this.loadMessages = function() {
+        if (isObject(this.messages) == true) {
+            return;
+        }
+
+        arikaim.component.loadProperties('rating::admin',function(params) {           
+            self.messages = params.messages;
+        }); 
+    };
 
     this.init = function() {
         paginator.init('rating_rows');
+        this.loadMessages();
     };
 
     this.initRows = function() {
-        var component = arikaim.component.get('rating::admin');
-        var removeMessage = component.getProperty('messages.remove.content');
-
+    
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
 
-            var message = arikaim.ui.template.render(removeMessage,{ title: title });
+            var message = arikaim.ui.template.render(self.messages.remove.content,{ title: title });
             modal.confirmDelete({ 
-                title: component.getProperty('messages.remove.title'),
+                title: self.messages.remove.title,
                 description: message
             },function() {
                 ratingControlPanel.delete(uuid,function(result) {
@@ -36,9 +46,7 @@ function RatingView() {
             var type = $(element).attr('type');
             var referenceId = $(element).attr('reference-id');
             var ratingUuid = $(element).attr('rating-uuid');
-
-            console.log(ratingUuid);
-            
+ 
             arikaim.ui.setActiveTab('#view_logs');
 
             arikaim.page.loadContent({
@@ -49,6 +57,8 @@ function RatingView() {
                     rating_uuid: ratingUuid,
                     reference_id: referenceId 
                 }
+            },function(result) {
+                ratingLogs.initRows();
             });  
         });
     };
@@ -56,6 +66,7 @@ function RatingView() {
 
 var ratingView = new RatingView();
 
-arikaim.page.onReady(function() {
+$(document).ready(function() {
     ratingView.init();   
+    ratingView.initRows();   
 });
