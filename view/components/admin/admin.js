@@ -7,8 +7,7 @@
 'use strict';
 
 function RatingControlPanel() {
-    var self = this;
-
+  
     this.delete = function(uuid, onSuccess, onError) {
         return arikaim.delete('/api/rating/admin/delete/' + uuid,onSuccess,onError);          
     };
@@ -24,6 +23,6 @@ function RatingControlPanel() {
 
 var ratingControlPanel = new RatingControlPanel();
 
-$(document).ready(function() {
+arikaim.component.onLoaded(function() {
     ratingControlPanel.init();
 });

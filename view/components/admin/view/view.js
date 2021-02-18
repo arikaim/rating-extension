@@ -66,7 +66,7 @@ function RatingView() {
 
 var ratingView = new RatingView();
 
-$(document).ready(function() {
+arikaim.component.onLoaded(function() {
     ratingView.init();   
     ratingView.initRows();   
 });

@@ -40,6 +40,6 @@ function Rating() {
 
 var rating = new Rating();
 
-$(document).ready(function() {
+arikaim.component.onLoaded(function() {
     rating.init();
 });

@@ -69,7 +69,7 @@ function RatingLogs() {
 
 var ratingLogs = new RatingLogs();
 
-$(document).ready(function() {
+arikaim.component.onLoaded(function() {
     ratingLogs.init();   
     ratingLogs.initRows();
 });
