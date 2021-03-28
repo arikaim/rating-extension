@@ -8,32 +8,20 @@
 
 function RatingView() {
     var self = this;
-    this.messages = null;
-
-    this.loadMessages = function() {
-        if (isObject(this.messages) == true) {
-            return;
-        }
-
-        arikaim.component.loadProperties('rating::admin',function(params) {           
-            self.messages = params.messages;
-        }); 
-    };
-
+  
     this.init = function() {
         paginator.init('rating_rows');
-        this.loadMessages();
+        this.loadMessages('rating::admin');
     };
 
     this.initRows = function() {
-    
         arikaim.ui.button('.delete-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
 
-            var message = arikaim.ui.template.render(self.messages.remove.content,{ title: title });
+            var message = arikaim.ui.template.render(self.getMessage('remove.content'),{ title: title });
             modal.confirmDelete({ 
-                title: self.messages.remove.title,
+                title: self.getMessage('remove.title'),
                 description: message
             },function() {
                 ratingControlPanel.delete(uuid,function(result) {
@@ -64,7 +52,7 @@ function RatingView() {
     };
 }
 
-var ratingView = new RatingView();
+var ratingView = createObject(RatingView,ControlPanelView);
 
 arikaim.component.onLoaded(function() {
     ratingView.init();   
