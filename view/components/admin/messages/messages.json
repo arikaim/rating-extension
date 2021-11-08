@@ -1,10 +1,6 @@
 {
-    "add": "Rating was added successfully.",
-    "delete": "Rating was deleted successfully.",   
+    "status": "Route status changed successfully.",  
     "errors": {
-        "add": "Can't add rating.",
-        "anonymous": "Anonymous ratign not allowed.",
-        "delete": "Can't delete rating",
-        "single": "Already rated."        
+        "status": "Route status change error."       
     }
 }

@@ -1,7 +1,7 @@
 {% set icon = icon|default('star') %}
 {% set max = max|default(7) %}
 {% if rating_id is empty or type is empty %}
-    {{ component('components:message.error',{ message: error.message }) }}
+    {{ component('semantic~message.error',{ message: error.message }) }}
 {% else %}
     {% set options = getOptions('rating.',true) %}
     {% set model = createModel('Rating','rating') %}

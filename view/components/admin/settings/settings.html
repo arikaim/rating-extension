@@ -2,17 +2,17 @@
 {% set single_user = getOption('rating.single.user') %}
 {% set anonymous = getOption('rating.allow.anonymous') %}
 
-{% component 'components:tabs.vertical.content' %}
+{% component 'semantic~tabs.vertical.content' %}
 <div class="mt-4">
     <form class="ui form" id="rating_settings">
         <div class="field">
-            {{ component('components:option.checkbox',{ name: 'rating.single.ip', value: single_ip, label: labels.single_ip }) }}           
+            {{ component('semantic~option.checkbox',{ name: 'rating.single.ip', value: single_ip, label: labels.single_ip }) }}           
         </div>
         <div class="field">
-            {{ component('components:option.checkbox',{ name: 'rating.single.user', value: single_user, label: labels.single_user }) }}           
+            {{ component('semantic~option.checkbox',{ name: 'rating.single.user', value: single_user, label: labels.single_user }) }}           
         </div>
         <div class="field">
-            {{ component('components:option.checkbox',{ name: 'rating.allow.anonymous', value: anonymous, label: labels.anonymous }) }}           
+            {{ component('semantic~option.checkbox',{ name: 'rating.allow.anonymous', value: anonymous, label: labels.anonymous }) }}           
         </div>        
     </form> 
 </div>

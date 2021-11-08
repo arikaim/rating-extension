@@ -13,7 +13,7 @@
         <input type="text" name="word" id="word" {{ title.placeholder|attr('placeholder') }} value="{{ tags.translation(language).word }}">  
     </div>                  
     <div class="field">
-        {{ component('components:language.label',{ language: language, class: 'basic' }) }}       
+        {{ component('semantic~language.label',{ language: language, class: 'basic' }) }}       
     </div>
-    {{ component('components:form.footer') }}   
+    {{ component('semantic~form.footer') }}   
 </form>
