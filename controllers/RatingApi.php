@@ -11,25 +11,12 @@ namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Controllers\ApiController;
-use Arikaim\Core\Middleware\ClientIpMiddleware;
 
 /**
  * Rating api controler
 */
 class RatingApi extends ApiController
 {
-    /**
-    * Constructor
-    * 
-    * @param Container|null $container
-    */
-    public function __construct($container = null) 
-    {        
-        $this->addMiddleware(ClientIpMiddleware::class);
-
-        parent::__construct($container);
-    }
-
     /**
      * Init controller
      *
