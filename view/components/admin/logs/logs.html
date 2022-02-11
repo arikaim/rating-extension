@@ -24,9 +24,7 @@
                 {% endif %}     
             </div>                 
         </div>
-        <div class="eight wide column">
-        </div>
-        <div class="one wide column right aligned">
+        <div class="four wide column right aligned">
             <div class="ui mini horizontal olive statistic pt-3">
                 <div class="value">
                     {{ average|numberFormat }}
@@ -36,7 +34,7 @@
                 </div>
             </div>                     
         </div>
-        <div class="one wide column right aligned">
+        <div class="four wide column right aligned">
             <div class="ui mini horizontal olive statistic pt-3">
                 <div class="value">
                     {{ logs.count() }}
@@ -46,26 +44,28 @@
                 </div>
             </div>                     
         </div>
-        <div class="one wide column right floated">       
+        <div class="three wide column right aligned">       
             {{ component('semantic~paginator.dropdown',{ namespace: 'rating.logs' }) }}
         </div>
     </div>
 </div>
-<table class="ui compact stackable selectable borderless basic table">
-    <thead class="table-head">
-        <tr>              
-            <th class="one wide collapsing left aligned">{{ columns.action }}</th>
-            <th class="collapsing two wide">{{ columns.date }}</th>
-            <th class="one wide collapsing">{{ columns.id }}</th>    
-            <th class="one wide collapsing">{{ columns.value }}</th>    
-            <th class="ten wide">{{ columns.ip }}</th>   
-            <th class="ten wide">{{ columns.user }}</th>                                                            
-        </tr>
-    </thead>
-    <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
-        {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
-    </tbody>
-</table> 
-<div id="paginator" class="mt-2">      
-    {{ component("semantic~paginator",{ namespace: 'rating.logs' }) }}
+<div class="ui segment">
+    <table class="ui compact stackable selectable borderless basic table">
+        <thead class="table-head">
+            <tr>              
+                <th class="one wide collapsing left aligned">{{ columns.action }}</th>
+                <th class="collapsing two wide">{{ columns.date }}</th>
+                <th class="one wide collapsing">{{ columns.id }}</th>    
+                <th class="one wide collapsing">{{ columns.value }}</th>    
+                <th class="ten wide">{{ columns.ip }}</th>   
+                <th class="ten wide">{{ columns.user }}</th>                                                            
+            </tr>
+        </thead>
+        <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
+            {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
+        </tbody>
+    </table> 
+    <div id="paginator" class="mt-2">      
+        {{ component("semantic~paginator",{ namespace: 'rating.logs' }) }}
+    </div>
 </div>
