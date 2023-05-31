@@ -1,7 +1,6 @@
 {
     "labels": {
-        "view": "View",
-        "logs": "Logs",
+        "view": "View",      
         "settings": "Setting"
     },
     "messages": {

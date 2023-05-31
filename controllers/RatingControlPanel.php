@@ -37,17 +37,17 @@ class RatingControlPanel extends ControlPanelApiController
     */
     public function deleteController($request, $response, $data)
     { 
-        $this->onDataValid(function($data) {
-            $uuid = $data->get('uuid');
-            $result = Model::Rating('rating')->remove($uuid);
+        $data
+            ->validate(true);
 
-            $this->setResponse($result,function() use($uuid) {            
-                $this
-                    ->message('delete')
-                    ->field('uuid',$uuid);  
-            },'errors.delete');
-        }); 
-        $data->validate();
+        $uuid = $data->get('uuid');
+        $result = Model::Rating('rating')->remove($uuid);
+
+        $this->setResponse($result,function() use($uuid) {            
+            $this
+                ->message('delete')
+                ->field('uuid',$uuid);  
+        },'errors.delete');
     }
     
     /**
@@ -60,16 +60,18 @@ class RatingControlPanel extends ControlPanelApiController
     */
     public function deleteLogController($request, $response, $data)
     {
-        $this->onDataValid(function($data) {
-            $uuid = $data->get('uuid');
-            $result = Model::RatingLogs('rating')->remove($uuid);
+        $data
+            ->validate(true);
 
-            $this->setResponse($result,function() use($uuid) {            
-                $this
-                    ->message('delete')
-                    ->field('uuid',$uuid);  
-            },'errors.delete');
-        }); 
-        $data->validate();
+        $uuid = $data->get('uuid');
+        $rating = Model::RatingLogs('rating')->findById($uuid);
+        $ratingId = $rating->rating_id;
+        $rating->delete();
+
+        $this->get('service')->get('rating')->updateRating($ratingId);
+
+        $this
+            ->message('delete')
+            ->field('uuid',$uuid);  
     }
 }

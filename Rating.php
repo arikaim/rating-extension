@@ -32,7 +32,9 @@ class Rating extends Extension
         $this->addApiRoute('DELETE','/api/rating/admin/logs/delete/{uuid}','RatingControlPanel','deleteLog','session');          
         // Create db tables
         $this->createDbTable('RatingSchema');
-        $this->createDbTable('RatingLogsSchema');        
+        $this->createDbTable('RatingLogsSchema'); 
+        // Services
+        $this->registerService('RatingService');       
         // Options
         $this->createOption('rating.allow.anonymous',true);
         $this->createOption('rating.single.user',true);

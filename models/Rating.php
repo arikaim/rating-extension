@@ -15,13 +15,17 @@ use Arikaim\Extensions\Rating\Models\RatingLogs;
 
 use Arikaim\Core\Db\Traits\Uuid;
 use Arikaim\Core\Db\Traits\Find;
+use Arikaim\Core\Db\Traits\Status;
+use Arikaim\Core\Db\Traits\PolymorphicRelations;
 
 /**
  * Rating model class
  */
 class Rating extends Model  
 {
-    use Uuid,       
+    use Uuid,  
+        Status,
+        PolymorphicRelations,     
         Find;
        
     /**
@@ -37,9 +41,10 @@ class Rating extends Model
      * @var array
      */
     protected $fillable = [
-        'reference_id',
-        'type',
-        'summary',
+        'relation_type',
+        'relation_id',
+        'summary',        
+        'status',
         'rated_count'     
     ];
     
@@ -53,17 +58,17 @@ class Rating extends Model
     /**
      * Mutator (get) for average attribute.
      *
-     * @return array
+     * @return float
      */
     public function getAverageAttribute()
     {
-        return ($this->summary / $this->rated_count);
+        return ($this->rated_count > 0 && $this->summary > 0) ? ($this->summary / $this->rated_count) : 0;
     }
 
     /**
      * Rating logs relation
      *
-     * @return mixed
+     * @return Relation|null
      */
     public function logs()
     {
@@ -73,19 +78,39 @@ class Rating extends Model
     /**
      * Remove rating
      *
-     * @param string|integer $uuid
+     * @param string|integer|null $id
      * @return boolean
      */
-    public function remove($uuid)
+    public function remove($id = null): bool
     {
-        $rating = $this->findById($uuid);
-        if (\is_object($rating) == true) {
-            $rating->logs()->delete();
+        $rating = (empty($id) == true) ? $this : $this->findById($id);     
+        if ($rating == null) {
+            return false;  
+        }
+        $rating->logs()->delete();
+        $result = $rating->delete();
 
-            return $rating->delete();
+        return ($result !== false);
+    }
+
+    /**
+     * Find rating log
+     *
+     * @param integer|null $userId
+     * @param string|null  $clientIp
+     * @return Model|null
+     */
+    public function findRatingLog(?int $userId = null, ?string $clientIp = null): ?object
+    {
+        $query = $this->logs;
+        if (empty($userId) == false) {
+            $query = $query->where('user_id','=',$userId);
+        }
+        if (empty($clientIp) == false) {
+            $query = $query->where('ip','=',$clientIp);
         }
 
-        return false;     
+        return $query->first();
     }
 
     /**
@@ -94,32 +119,39 @@ class Rating extends Model
      * @param integer $id
      * @param string $type
      * @param float $value
-     * @return Model
+     * @return Model|null
      */
-    public function add($id, $type, $value, $userId, $clientIp)
+    public function add(int $id, string $type, float $value, ?int $userId = null, ?string $clientIp = null): ?object
     {
         $value = \number_format($value,2);
-        $info = [
-            'reference_id' => $id,
-            'type'         => $type, 
-            'summary'      => $value
-        ];
-
+       
         $rating = $this->findRating($id,$type);
-        if (\is_object($rating) == true) {
-            $rating->increment('rated_count');
-            $info['summary'] = $rating->summary + $value;         
-            $rating->update($info);
+        if ($rating != null) {
+            // update rating           
+            $rating->update([
+                'summary' => $rating->summary + $value
+            ]);
+            $rating->increment('rated_count');            
         } else {
-            $rating = $this->create($info);
-        }
-        $rating->log()->add($rating->id,$value,$userId,$clientIp);
+            // create rating
+            $rating = $this->create([
+                'relation_id'   => $id,
+                'relation_type' => $type,                
+                'summary'       => $value
+            ]);
 
+            if ($rating == null) {
+                return null;
+            }
+        }
+        // add log
+        $rating->log()->add($rating->id,$value,$userId,$clientIp);
+        
         return $rating;
     }
 
     /**
-     *  Create rating log Model
+     * Create rating log Model
      *
      * @return Model
      */
@@ -138,9 +170,9 @@ class Rating extends Model
      * @param string $type
      * @return boolean
      */
-    public function hasRating($id, $type)
+    public function hasRating(int $id, string $type): bool
     {
-        return \is_object($this->findRating($id,$type));
+        return ($this->findRating($id,$type) != null);
     }
 
     /**
@@ -148,13 +180,11 @@ class Rating extends Model
      *
      * @param integer $id
      * @param string $type
-     * @return Model|false
+     * @return Model|null
      */
-    public function findRating($id, $type)
+    public function findRating(int $id, string $type): ?object
     {
-        $model = $this->where('reference_id','=',$id)->where('type','=',$type)->first();
-
-        return (\is_object($model) == true) ? $model : false;
+        return $this->where('relation_id','=',$id)->where('relation_type','=',$type)->first();       
     }
 
     /**
@@ -165,55 +195,20 @@ class Rating extends Model
      * @param float $value
      * @return boolean
      */
-    public function updateRating($id, $type, $value)
+    public function updateRating(int $id, string $type, float $value): bool
     {
         $rating = $this->findRating($id,$type);
-        if (\is_object($rating) == false) {
+        if ($rating == null) {
             return false;
         }
+
         $value = \number_format($value,2);
-        
-        $info = [
+        $result = $rating->update([
             'reference_id' => $id,
             'type'         => $type,
             'summary'      => $value
-        ];
+        ]);
 
-        return $rating->update($info);
-    }
-
-    /**
-     * Return true if rating is allowed 
-     *
-     * @param integer $id
-     * @param string $type
-     * @param int|null $currentUserId
-     * @param array $options
-     * @return boolean
-     */
-    public function isAllowed($id, $type, $currentUserId, $clientIp, array $options)
-    {
-        $uniqueIp = (bool)$options['rating.single.ip'] ?? false;
-        $singleUser = (bool)$options['rating.single.user'] ?? false;
-        $anonymous = (bool)$options['rating.allow.anonymous'] ?? false;
-    
-        if (($anonymous == false) && (empty($currentUserId) == true)) {                                             
-            return false;          
-        }
-    
-        if ($uniqueIp == true || $singleUser == true) {
-            $rating = $this->findRating($id,$type);
-            if (\is_object($rating) == true) {               
-                $ip = ($uniqueIp == true) ? $clientIp : null;
-                $userId = ($singleUser == true) ? $currentUserId : null;
-                $log = $rating->log()->findLog($ip,$userId);
-
-                if (\is_object($log) == true) {                  
-                    return false;
-                }
-            }        
-        }
-
-        return true;
+        return ($result !== false);
     }
 }

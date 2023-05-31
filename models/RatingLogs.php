@@ -60,7 +60,7 @@ class RatingLogs extends Model
      * @param integer $id
      * @return Builder
      */
-    public function scopeRatingLogs($query, $id)
+    public function scopeRatingLogs($query, int $id)
     {
         return $query->where('rating_id','=',$id);
     } 
@@ -73,9 +73,9 @@ class RatingLogs extends Model
      * @param integer $userId
      * @return boolean
      */
-    public function hasLog($ratingId, $ip = null, $userId = null)
+    public function hasLog($ratingId, $ip = null, $userId = null): bool
     {
-        return \is_object($this->findLog($ip,$userId,$ratingId));                 
+        return ($this->findLog($ip,$userId,$ratingId) != null);                 
     } 
     
     /**
@@ -87,27 +87,25 @@ class RatingLogs extends Model
      * @param string|null $clientIp
      * @return Model
      */
-    public function add($ratingId, $value, $userId, $clientIp = null)
+    public function add(int $ratingId, float $value, ?int $userId = null, ?string $clientIp = null): ?object
     {
-        $log = $this->create([
+        return $this->create([
             'rating_id'  => $ratingId,
             'value'      => $value,
             'ip'         => $clientIp,
             'user_id'    => $userId
-        ]);
-
-        return $log;
+        ]);        
     } 
 
     /**
      * Find rating log
      *
-     * @param string $ip
-     * @param integer $userId
-     * @param integer $ratingId
+     * @param string|null $ip
+     * @param integer|null $userId
+     * @param integer|null $ratingId
      * @return Model|null
      */
-    public function findLog($ip = null, $userId = null, $ratingId = null)
+    public function findLog(?string $ip = null, ?int $userId = null, ?int $ratingId = null): ?object
     {
         $ratingId = $ratingId ?? $this->rating_id;                
         $model = $this->where('rating_id','=',$ratingId);
@@ -119,7 +117,7 @@ class RatingLogs extends Model
             $model = $model->where('ip','=',$ip);
         }
        
-        return $model->orderBy('date_created', 'desc')->first();
+        return $model->orderBy('date_created','desc')->first();
     }
 
     /**
@@ -128,11 +126,11 @@ class RatingLogs extends Model
      * @param string|integer $uuid
      * @return boolean
      */
-    public function remove($uuid)
+    public function remove($uuid): bool
     {
         $log = $this->findById($uuid);
         
-        return (\is_object($log) == true) ? $log->delete() : false;                     
+        return ($log != null) ? $log->delete() : false;                     
     }
 
     /**
@@ -140,11 +138,11 @@ class RatingLogs extends Model
      *
      * @return float
      */
-    public function calcAverage()
+    public function calcAverage(): float
     {
         $sum = (float)$this->sum('value');
         $count = (int)$this->count();
       
-        return ($sum / $count);
+        return (float)($sum / $count);
     }
 }

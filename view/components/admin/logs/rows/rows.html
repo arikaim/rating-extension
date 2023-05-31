@@ -9,16 +9,10 @@
     <td>            
         <button class="ui icon mini basic button delete-button" {{ buttons.delete.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ item.title }}">
             <i class="icon trash orange"></i>
-        </button>  
-        <button class="ui icon mini basic button view-rating" {{ buttons.rating.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ item.title }}">
-            <i class="icon list"></i>
-        </button>  
+        </button>         
     </td>
     <td>
-        {{ item.date_created|dateTimeFormat }}
-    </td>
-    <td>
-        {{ item.rating_id }}
+        {{ item.date_created|dateFormat }}
     </td>
     <td>
         {{ item.value }}

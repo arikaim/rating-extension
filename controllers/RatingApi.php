@@ -11,6 +11,7 @@ namespace Arikaim\Extensions\Rating\Controllers;
 
 use Arikaim\Core\Db\Model;
 use Arikaim\Core\Controllers\ApiController;
+use Arikaim\Core\Utils\ClientIp;
 
 /**
  * Rating api controler
@@ -35,19 +36,20 @@ class RatingApi extends ApiController
      * @param Validator $data
      * @return Psr\Http\Message\ResponseInterface
     */
-    public function readController($request, $response, $data)
+    public function read($request, $response, $data)
     {
-        $this->onDataValid(function($data) {
-            $id = $data->get('id');
-            $rating = Model::Rating('rating')->findById($id);
+        $data->validate(true);
 
-            $this->setResponse(\is_object($rating),function() use($rating) {                  
-                $this
-                    ->message('read')
-                    ->field('rating',$rating->toArray());                  
-            },'errors.read');                     
-        });
-        $data->validate();
+        $id = $data->get('id');
+        $rating = Model::Rating('rating')->findById($id);
+        if ($rating == null) {
+            $this->error('errors.read','Rating id not valid');
+            return false;
+        }
+           
+        $this
+            ->message('read')
+            ->field('rating',$rating->toArray());                                                 
     }
 
     /**
@@ -58,40 +60,40 @@ class RatingApi extends ApiController
      * @param Validator $data
      * @return Psr\Http\Message\ResponseInterface
     */
-    public function addController($request, $response, $data)
+    public function add($request, $response, $data)
     {
-        $this->onDataValid(function($data) use ($request) {
-            $id = $data->get('id');
-            $type = $data->get('type');
-            $value = $data->get('value');
-
-            $rating = Model::Rating('rating');
-            $curretnUserId = $this->getUserId();
-            $clientIp = $request->getAttribute('client_ip');   
-
-            $options = $this->get('options')->searchOptions('rating.',true);
-
-            if ($rating->isAllowed($id,$type,$curretnUserId,$clientIp,$options) == false) {
-                if (empty($curretnUserId) == true) {
-                    $this->error('errors.anonymous');
-                } else {
-                    $this->error('errors.single');
-                }
-                return;
-            }
-            
-            $rating = $rating->add($id,$type,$value,$curretnUserId,$clientIp);
-            $this->setResponse(\is_object($rating),function() use($rating) {                  
-                $this
-                    ->message('add')
-                    ->field('average',\number_format($rating->average,2))
-                    ->field('uuid',$rating->uuid);                  
-            },'errors.add');                     
-        });
         $data
             ->addRule('text:min=2','type')
             ->addRule('text:min=1','id')
             ->addRule('text:min=1','value')
-            ->validate();
+            ->validate(true);
+
+        $id = $data->get('id');
+        $type = $data->get('type');
+        $value = $data->get('value');
+
+        $rating = Model::Rating('rating');
+        $userId = $this->getUserId();
+        $clientIp = ClientIp::getClientIpAddress($request);
+
+        if ($this->get('service')->get('rating')->isAllowed($id,$type,$userId,$clientIp) == false) {
+            if (empty($userId) == true) {
+                $this->error('errors.anonymous');
+            } else {
+                $this->error('errors.single');
+            }
+            return;
+        }
+        
+        $rating = $rating->add($id,$type,$value,$userId,$clientIp);
+        if ($rating == null) {
+            $this->error('errors.add');
+            return false;
+        }
+
+        $this
+            ->message('add')
+            ->field('average',\number_format($rating->average,2))
+            ->field('uuid',$rating->uuid);                                          
     }
 }

@@ -1,6 +1,6 @@
 /**
  *  Arikaim
- *  @copyright  Copyright (c) Konstantin Atanasov <info@arikaim.com>
+ *  @copyright  Copyright (c)  <info@arikaim.com>
  *  @license    http://www.arikaim.com/license
  *  http://www.arikaim.com 
 */
@@ -15,7 +15,7 @@ function RatingView() {
     };
 
     this.initRows = function() {
-        arikaim.ui.button('.delete-button',function(element) {
+        arikaim.ui.button('.delete-rating-button',function(element) {
             var uuid = $(element).attr('uuid');
             var title = $(element).attr('data-title');
 
@@ -35,10 +35,8 @@ function RatingView() {
             var referenceId = $(element).attr('reference-id');
             var ratingUuid = $(element).attr('rating-uuid');
  
-            arikaim.ui.setActiveTab('#view_logs');
-
             arikaim.page.loadContent({
-                id: 'tab_content',
+                id: 'rating_logs',
                 component: 'rating::admin.logs',
                 params: { 
                     type: type,

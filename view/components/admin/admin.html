@@ -1,7 +1,6 @@
 {{  component('semantic~tabs',{ 
         items: [ 
             { id: 'view_rating',title: labels.view, icon: 'list', component: 'rating::admin.view', active: true },           
-            { id: 'view_logs',title: labels.logs, icon: 'history', component: 'rating::admin.logs' },
             { id: 'settings',title: labels.settings, component: 'rating::admin.settings', icon: 'cogs' }    
         ],
         menu: { component: 'system:admin.extensions.menu.actions', extension: 'rating' },

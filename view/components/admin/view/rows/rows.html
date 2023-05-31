@@ -7,18 +7,22 @@
 </tr>
 {% endif %}
 {% for item in items %}
-    {% set data_title = component('system:admin.orm.model.name',{ type: item.type, uuid: item.reference_id })|striptags %}
+    {% set data_title = component('system:admin.orm.model.name',{ type: item.relation_type, uuid: item.relation_id })|striptags %}
     <tr id="{{ item.uuid }}">
         <td>           
-            <button class="ui icon mini basic button delete-button" {{ buttons.delete.title|attr('title') }} uuid="{{ item.uuid }}" data-title="{{ data_title }}">
+            <button 
+                class="ui icon mini basic button delete-rating-button" {{ buttons.delete.title|attr('title') }} 
+                uuid="{{ item.uuid }}" data-title="{{ data_title }}">
                 <i class="icon trash orange"></i>
             </button> 
-            <button type="{{ item.type }}" rating-uuid="{{ item.uuid }}" reference-id="{{ item.reference_id }}" class="ui icon mini basic button view-logs" {{ buttons.logs.title|attr('title') }} uuid="{{ item.uuid }}">
+            <button 
+                type="{{ item.relation_type }}" rating-uuid="{{ item.uuid }}" 
+                reference-id="{{ item.relation_id }}" class="ui icon mini basic button view-logs" {{ buttons.logs.title|attr('title') }} uuid="{{ item.uuid }}">
                 <i class="icon history"></i>
             </button>        
         </td>
         <td>
-            {{ component('rating::admin.reference.label',{ type: item.type, id: item.reference_id }) }}          
+            {{ component('rating::admin.reference.label',{ type: item.relation_type, id: item.relation_id }) }}          
         </td>       
         <td>
             {{ item.average|numberFormat([2]) }}

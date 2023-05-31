@@ -16,8 +16,8 @@
     <div class="ui stackable grid">
         <div class="five wide column">       
             <div class="font-bold mr-1 pt-3">
-                {{ labels.reference }}
-                {% if reference_id is not null %}                
+                {{ labels.reference }}            
+                {% if reference_id is not null %}                             
                     {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
                 {% else %}
                     <span>{{ labels.all }}</span>
@@ -45,7 +45,7 @@
             </div>                     
         </div>
         <div class="three wide column right aligned">       
-            {{ component('semantic~paginator.dropdown',{ namespace: 'rating.logs' }) }}
+            {{ component('semantic~paginator.dropdown',{ namespace: 'rating.logs', class: 'mini' }) }}
         </div>
     </div>
 </div>
@@ -54,15 +54,14 @@
         <thead class="table-head">
             <tr>              
                 <th class="one wide collapsing left aligned">{{ columns.action }}</th>
-                <th class="collapsing two wide">{{ columns.date }}</th>
-                <th class="one wide collapsing">{{ columns.id }}</th>    
+                <th class="collapsing two wide">{{ columns.date }}</th>                
                 <th class="one wide collapsing">{{ columns.value }}</th>    
-                <th class="ten wide">{{ columns.ip }}</th>   
-                <th class="ten wide">{{ columns.user }}</th>                                                            
+                <th class="six wide">{{ columns.ip }}</th>   
+                <th>{{ columns.user }}</th>                                                            
             </tr>
         </thead>
         <tbody id="rating_logs" component="rating::admin.logs.rows" namespace="rating.logs">
-            {{ component('rating::admin.logs.rows',{ rating_id: rating.id }) }} 
+            {{ component('rating::admin.logs.rows',{ rating_id: rating.id, type: type, reference_id: reference_id  }) }} 
         </tbody>
     </table> 
     <div id="paginator" class="mt-2">      

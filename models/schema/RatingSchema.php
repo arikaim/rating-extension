@@ -33,13 +33,16 @@ class RatingSchema extends Schema
     {            
         // columns    
         $table->id();      
-        $table->prototype('uuid');            
-        $table->integer('reference_id')->nullable(false);
-        $table->string('type')->nullable(false); 
+        $table->prototype('uuid'); 
+        $table->status();
+        $table->string('relation_type')->nullable(false);         
+        $table->integer('relation_id')->nullable(false);   
         $table->decimal('summary',15,2)->nullable(false)->default(0.00);
         $table->integer('rated_count')->nullable(false)->default(1);
         // index       
-        $table->unique(['reference_id','type']);   
+        $table->unique(['relation_id','relation_type']);   
+        $table->index('relation_type');
+        $table->index('relation_id');
     }
 
     /**
