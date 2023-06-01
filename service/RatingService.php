@@ -39,6 +39,18 @@ class RatingService extends Service implements ServiceInterface
     }
 
     /**
+     * Find rating
+     *
+     * @param integer $id
+     * @param string  $type
+     * @return object|null
+     */
+    public function findRating(int $id, string $type): ?object
+    {
+        return Model::Rating('rating')->findRating($id,$type);
+    }
+
+    /**
      * Return true if rating is allowed 
      *
      * @param integer $id
@@ -72,6 +84,12 @@ class RatingService extends Service implements ServiceInterface
         return true;
     }
 
+    /**
+     * Update rating
+     *
+     * @param integer $id
+     * @return boolean
+     */
     public function updateRating(int $id): bool
     {
         $rating = Model::Rating('rating')->findById($id);
@@ -79,12 +97,9 @@ class RatingService extends Service implements ServiceInterface
             return false;
         }
 
-        $summary = $rating->logs()->sum('value');
-        $count = $rating->logs()->count();
-
         return (bool)$rating->update([
-            'summary'     => $summary,
-            'rated_count' => $count
+            'summary'     => $rating->logs()->sum('value'),
+            'rated_count' => $rating->logs()->count()
         ]);
     }
 }

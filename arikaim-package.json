@@ -5,7 +5,7 @@
     "type": "user",
     "description": "Rating feature for games, blog posts, pages or other items.",
     "short-description": "Manage rating.",
-    "version": "1.3.2",
+    "version": "1.4.0",
     "position": "3",
     "repository": "https://github.com/arikaim/rating-extension.git",
     "admin-menu": {        

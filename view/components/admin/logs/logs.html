@@ -14,37 +14,37 @@
 
 <div class="ui segment">
     <div class="ui stackable grid">
-        <div class="five wide column">       
-            <div class="font-bold mr-1 pt-3">
-                {{ labels.reference }}            
-                {% if reference_id is not null %}                             
-                    {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
-                {% else %}
-                    <span>{{ labels.all }}</span>
-                {% endif %}     
-            </div>                 
-        </div>
-        <div class="four wide column right aligned">
-            <div class="ui mini horizontal olive statistic pt-3">
-                <div class="value">
-                    {{ average|numberFormat }}
-                </div>
-                <div class="label">
-                    {{ labels.average }}
-                </div>
-            </div>                     
-        </div>
-        <div class="four wide column right aligned">
-            <div class="ui mini horizontal olive statistic pt-3">
-                <div class="value">
-                    {{ logs.count() }}
-                </div>
-                <div class="label">
-                    {{ labels.total }}
-                </div>
-            </div>                     
-        </div>
-        <div class="three wide column right aligned">       
+        <div class="fourteen wide column">   
+            <div class="flex flex-rows items-center">
+                <div class="flex flex-rows items-center">
+                    <div class="font-bold mr-1">
+                        {{ labels.reference }}        
+                    </div>                   
+                    {% if reference_id is not null %}                             
+                        {{ component('rating::admin.reference.label',{ type: type, id: reference_id }) }}  
+                    {% else %}
+                        <div>{{ labels.all }}</div>
+                    {% endif %}     
+                </div>    
+                <div class="flex flex-rows items-center mx-4">
+                    <div class="font-bold">
+                        {{ average|numberFormat }}
+                    </div>
+                    <div class="label px-2">
+                        {{ labels.average }}
+                    </div>
+                </div>   
+                <div class="flex flex-rows items-center mx-4">
+                    <div class="font-bold">
+                        {{ logs.count() }}
+                    </div>
+                    <div class="label px-2">
+                        {{ labels.total }}
+                    </div>
+                </div>      
+            </div>
+        </div>                                
+        <div class="two wide column right aligned">       
             {{ component('semantic~paginator.dropdown',{ namespace: 'rating.logs', class: 'mini' }) }}
         </div>
     </div>
