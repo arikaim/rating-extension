@@ -11,13 +11,18 @@
     <tr id="{{ item.uuid }}">
         <td>           
             <button 
-                class="ui icon mini basic button delete-rating-button" {{ buttons.delete.title|attr('title') }} 
-                uuid="{{ item.uuid }}" data-title="{{ data_title }}">
+                class="ui icon mini compact basic button delete-rating-button" 
+                {{ buttons.delete.title|attr('title') }} 
+                uuid="{{ item.uuid }}" 
+                data-title="{{ data_title }}">
                 <i class="icon trash orange"></i>
             </button> 
             <button 
                 type="{{ item.relation_type }}" rating-uuid="{{ item.uuid }}" 
-                reference-id="{{ item.relation_id }}" class="ui icon mini basic button view-logs" {{ buttons.logs.title|attr('title') }} uuid="{{ item.uuid }}">
+                reference-id="{{ item.relation_id }}" 
+                class="ui icon mini compact basic button view-logs" 
+                {{ buttons.logs.title|attr('title') }} 
+                uuid="{{ item.uuid }}">
                 <i class="icon history"></i>
             </button>        
         </td>

@@ -2,7 +2,7 @@
     "columns": {
         "action": "Action",
         "reference": "Reference",      
-        "rating": "Average Rating",
-        "count": "Rated Count"            
+        "rating": "Average",
+        "count": "Rated"            
     }
 }
