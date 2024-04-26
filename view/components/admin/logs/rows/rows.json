@@ -2,7 +2,7 @@
     "buttons": {
         "delete": {      
             "content": "Delete",          
-            "title": "Delte rating"
+            "title": "Delete rating"
         },      
         "edit": {      
             "content": "Edit",          

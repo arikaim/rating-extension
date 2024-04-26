@@ -61,11 +61,11 @@ class RatingService extends Service implements ServiceInterface
      */
     public function isAllowed(int $id, string $type, ?int $userId, ?string $clientIp): bool
     {
-        global $container;
+        global $arikaim;
 
-        $uniqueIp = (bool)$container->get('options')->get('rating.single.ip',false);
-        $singleUser = (bool)$container->get('options')->get('rating.single.user',false); 
-        $anonymous = (bool)$container->get('options')->get('rating.allow.anonymous',false);
+        $uniqueIp = (bool)$arikaim->get('options')->get('rating.single.ip',false);
+        $singleUser = (bool)$arikaim->get('options')->get('rating.single.user',false); 
+        $anonymous = (bool)$arikaim->get('options')->get('rating.allow.anonymous',false);
     
         if (($anonymous == false) && (empty($currentUserId) == true)) {   
             // deny for anonymous                                          

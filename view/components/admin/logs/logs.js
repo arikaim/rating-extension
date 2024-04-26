@@ -40,9 +40,7 @@ function RatingLogs() {
         arikaim.ui.button('.view-rating',function(element) {
             var type = $(element).attr('type');
             var uuid = $(element).attr('uuid');
-
-            arikaim.ui.setActiveTab('#view_rating');
-
+            
             arikaim.page.loadContent({
                 id: 'tab_content',
                 component: 'rating::admin.view',
@@ -51,7 +49,6 @@ function RatingLogs() {
                     uuid: uuid 
                 }
             }); 
-            
         });
     };
 }
